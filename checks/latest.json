@@ -1,9 +1,11 @@
 {
-  "checkedAt": "2026-07-06T12:36:19.846Z",
+  "checkedAt": "2026-07-06T16:04:24.166Z",
   "base": "https://smalldocs.org",
   "commit": "f6bf13b696e3cd329881f6356248915d467c0227",
   "commitShort": "f6bf13b",
-  "result": "error",
-  "error": "Could not fetch GitHub manifest: HTTP 429 for https://raw.githubusercontent.com/espressoplease/smalldocs/trust-manifests/f6bf13b696e3cd329881f6356248915d467c0227.json",
+  "result": "ok",
+  "totalFiles": 109,
+  "matched": 109,
+  "mismatches": [],
   "manifestUrl": "https://raw.githubusercontent.com/espressoplease/smalldocs/trust-manifests/f6bf13b696e3cd329881f6356248915d467c0227.json"
 }
