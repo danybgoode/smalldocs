@@ -8,6 +8,23 @@ SmallDocs (formerly SDocs) is a lightweight, stateless markdown editor with live
 
 ---
 
+## Miyagi PMO internal fork
+
+This fork is used internally by Miyagi PMO operational reports. It is self-hosted on Cloud Run and
+keeps the Elastic License 2.0 notices intact.
+
+Operational carve-outs for this fork:
+
+- URL-hash documents are enabled and remain the supported sharing model for generated reports.
+- Short-link and SQLite-backed persistence are deferred. Deployments set `SDOCS_ENABLE_STATEFUL_APIS=0`
+  unless an operator deliberately opts into stateful APIs later.
+- This fork is for internal PMO reporting only. It is not offered as a hosted or managed service to
+  third parties.
+
+Docker/Cloud Run uses the included `Dockerfile`; the app still has no frontend build step.
+
+---
+
 ## What it does
 
 - **Read** - open any `.md` file with clean, styled formatting

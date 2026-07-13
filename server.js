@@ -5,14 +5,15 @@ const path = require('path');
 const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3000;
-const ANALYTICS_ENABLED = process.env.ANALYTICS_ENABLED === '1';
+const STATEFUL_APIS_ENABLED = process.env.SDOCS_ENABLE_STATEFUL_APIS === '1';
+const ANALYTICS_ENABLED = STATEFUL_APIS_ENABLED && process.env.ANALYTICS_ENABLED === '1';
 const analytics = ANALYTICS_ENABLED ? require('./analytics/db') : null;
 
-const shortLinks = require('./short-links/db');
-const shortLinksRateLimit = require('./short-links/rate-limit');
+const shortLinks = STATEFUL_APIS_ENABLED ? require('./short-links/db') : null;
+const shortLinksRateLimit = STATEFUL_APIS_ENABLED ? require('./short-links/rate-limit') : null;
 const SHORT_LINKS_MAX_BYTES = 256 * 1024;       // 256 KB ciphertext cap
 const SHORT_LINKS_CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000;
-shortLinksRateLimit.startCleanup();
+if (STATEFUL_APIS_ENABLED) shortLinksRateLimit.startCleanup();
 
 // ── Latest sdocs-dev release (powers the reader footer's "update" hint) ──────
 // The browser cannot see whether a visitor has the CLI installed, so on a doc
@@ -72,25 +73,29 @@ function getCliLatest() {
   return cliLatestInflight;
 }
 // Kick off one cleanup on boot, then once per day
-setImmediate(() => { try { shortLinks.cleanupExpired(); } catch (_) {} });
-const _shortLinksCleanupTimer = setInterval(() => {
-  try { shortLinks.cleanupExpired(); } catch (_) {}
-}, SHORT_LINKS_CLEANUP_INTERVAL_MS);
-if (_shortLinksCleanupTimer.unref) _shortLinksCleanupTimer.unref();
+if (STATEFUL_APIS_ENABLED) {
+  setImmediate(() => { try { shortLinks.cleanupExpired(); } catch (_) {} });
+  const _shortLinksCleanupTimer = setInterval(() => {
+    try { shortLinks.cleanupExpired(); } catch (_) {}
+  }, SHORT_LINKS_CLEANUP_INTERVAL_MS);
+  if (_shortLinksCleanupTimer.unref) _shortLinksCleanupTimer.unref();
+}
 
-const feedback = require('./feedback/db');
-const feedbackRateLimit = require('./feedback/rate-limit');
+const feedback = STATEFUL_APIS_ENABLED ? require('./feedback/db') : null;
+const feedbackRateLimit = STATEFUL_APIS_ENABLED ? require('./feedback/rate-limit') : null;
 const FEEDBACK_MAX_BYTES = 4 * 1024;            // 4 KB message cap
-feedback.init();
-feedbackRateLimit.startCleanup();
+if (STATEFUL_APIS_ENABLED) {
+  feedback.init();
+  feedbackRateLimit.startCleanup();
+}
 
 // Teams-interest form (homepage Teams section). Stored in its own SQLite
 // file; an email ping fires when SMTP env vars are set (see teams/notify.js).
 // Shares the feedback rate limiter: both are infrequent human submissions
 // and a common per-IP budget keeps spam cheap to refuse.
-const teamsInterest = require('./teams/db');
-const teamsNotify = require('./teams/notify');
-teamsInterest.init();
+const teamsInterest = STATEFUL_APIS_ENABLED ? require('./teams/db') : null;
+const teamsNotify = STATEFUL_APIS_ENABLED ? require('./teams/notify') : null;
+if (STATEFUL_APIS_ENABLED) teamsInterest.init();
 
 // Auto-version: hash all non-font files in public/ at startup.
 // Any file change = new hash = clients purge their SW cache.
@@ -127,7 +132,7 @@ const BUILT_AT = new Date().toISOString();
 const TRUST_MANIFEST = {
   commit: RUNNING_COMMIT,
   builtAt: BUILT_AT,
-  repo: 'https://github.com/espressoplease/smalldocs',
+  repo: process.env.SDOCS_REPO_URL || 'https://github.com/espressoplease/smalldocs',
   files: trustFiles,
 };
 
@@ -513,18 +518,30 @@ const server = http.createServer((req, res) => {
 
   // POST /api/short: create a short link for encrypted ciphertext
   if (req.method === 'POST' && pathname === '/api/short') {
+    if (!STATEFUL_APIS_ENABLED) {
+      sendJson(res, 404, { error: 'stateful_apis_disabled' });
+      return;
+    }
     handleShortLinkPost(req, res);
     return;
   }
 
   // POST /api/feedback: store user-submitted feedback
   if (req.method === 'POST' && pathname === '/api/feedback') {
+    if (!STATEFUL_APIS_ENABLED) {
+      sendJson(res, 404, { error: 'stateful_apis_disabled' });
+      return;
+    }
     handleFeedbackPost(req, res);
     return;
   }
 
   // POST /api/teams-interest: store a Teams contact request + email ping
   if (req.method === 'POST' && pathname === '/api/teams-interest') {
+    if (!STATEFUL_APIS_ENABLED) {
+      sendJson(res, 404, { error: 'stateful_apis_disabled' });
+      return;
+    }
     handleTeamsInterestPost(req, res);
     return;
   }
@@ -542,6 +559,10 @@ const server = http.createServer((req, res) => {
 
   // GET /api/short/:id: fetch ciphertext for a short link
   if (pathname.startsWith('/api/short/')) {
+    if (!STATEFUL_APIS_ENABLED) {
+      sendJson(res, 404, { error: 'stateful_apis_disabled' });
+      return;
+    }
     const id = pathname.slice('/api/short/'.length);
     handleShortLinkGet(res, id);
     return;
@@ -652,6 +673,10 @@ const server = http.createServer((req, res) => {
 
   // Public JSON list of submitted feedback. No IP, no identifiers stored.
   if (pathname === '/api/feedback') {
+    if (!STATEFUL_APIS_ENABLED) {
+      sendJson(res, 404, { error: 'stateful_apis_disabled' });
+      return;
+    }
     try {
       const limit = parseInt(url.searchParams.get('limit') || '100', 10);
       const rows = feedback.list(isNaN(limit) ? 100 : limit);
