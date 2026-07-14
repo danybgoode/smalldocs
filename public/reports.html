@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Miyagi Reports - Biblioteca PMO</title>
+  <link rel="stylesheet" href="/public/reports.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Miyagi Reports</span>
+    </a>
+    <nav class="topnav" aria-label="Navegacion">
+      <a href="/docs">Visor</a>
+      <a href="/reports" aria-current="page">Biblioteca</a>
+      <a href="/trust">Confianza</a>
+      <a href="/connect">Local</a>
+    </nav>
+  </header>
+
+  <main data-report-data="/public/reports-data.json">
+    <section class="page-head" aria-labelledby="reports-title">
+      <div class="page-copy">
+        <p class="eyebrow">ROADMAP PUBLICO</p>
+        <h1 id="reports-title">Biblioteca PMO</h1>
+        <p class="lede">Vistas curadas del Roadmap, epics, sprints y reportes operativos listas para abrir en SmallDocs.</p>
+      </div>
+      <div class="roadmap-strip" aria-label="Resumen visual de avance">
+        <div class="strip-track" aria-hidden="true">
+          <span class="strip-node strip-node-a"></span>
+          <span class="strip-node strip-node-b"></span>
+          <span class="strip-node strip-node-c"></span>
+          <span class="strip-node strip-node-d"></span>
+        </div>
+        <div class="snapshot" aria-label="Resumen del Roadmap">
+          <div><span id="stat-shipped">--</span><small>epics shipped</small></div>
+          <div><span id="stat-active">--</span><small>en curso</small></div>
+          <div><span id="stat-items">--</span><small>reportes</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="views-section" aria-labelledby="views-title">
+      <div class="section-head">
+        <h2 id="views-title">Vistas ejecutivas</h2>
+        <p id="generated-at">Actualizando datos...</p>
+      </div>
+      <div class="views-grid" id="views-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="directory-section" aria-labelledby="directory-title">
+      <div class="directory-head">
+        <div>
+          <h2 id="directory-title">Directorio de reportes</h2>
+          <p id="result-count">Cargando...</p>
+        </div>
+        <div class="filters" role="search">
+          <label class="search-box">
+            <span class="sr-only">Buscar reportes</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.2-3.2"></path>
+            </svg>
+            <input id="search" type="search" placeholder="Buscar epic, sprint, area..." autocomplete="off">
+          </label>
+          <div class="segmented" aria-label="Tipo de reporte">
+            <button type="button" data-grain="all" aria-pressed="true">Todos</button>
+            <button type="button" data-grain="Epic" aria-pressed="false">Epics</button>
+            <button type="button" data-grain="Sprint" aria-pressed="false">Sprints</button>
+            <button type="button" data-grain="Seed" aria-pressed="false">Ideas</button>
+          </div>
+          <select id="status-filter" aria-label="Filtrar por estado">
+            <option value="">Todos los estados</option>
+          </select>
+          <select id="area-filter" aria-label="Filtrar por area">
+            <option value="">Todas las areas</option>
+          </select>
+        </div>
+      </div>
+      <div class="report-list" id="report-list" aria-live="polite"></div>
+      <p class="empty" id="empty" hidden>No hay reportes para ese filtro.</p>
+    </section>
+  </main>
+
+  <script src="/public/reports.js"></script>
+</body>
+</html>

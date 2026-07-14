@@ -84,6 +84,13 @@ module.exports = function(harness) {
         '/docs should default to sdoc.md');
     });
 
+    await testAsync('GET /docs points the report library button at the hosted PMO library', async () => {
+      const r = await get(BASE + '/docs');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.body.includes('href="/reports"'),
+        '/docs should send Biblioteca de reportes to hosted /reports, not local /library');
+    });
+
     await testAsync('GET /new returns 200 with HTML', async () => {
       const r = await get(BASE + '/new');
       assert.strictEqual(r.status, 200);
@@ -239,6 +246,27 @@ module.exports = function(harness) {
       const data = JSON.parse(r.body);
       assert.ok(Array.isArray(data.weeks), 'should have weeks array');
       assert.ok(Array.isArray(data.cohorts), 'should have cohorts array');
+    });
+
+    await testAsync('GET /reports returns the hosted PMO report library', async () => {
+      const r = await get(BASE + '/reports');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.headers['content-type'].includes('text/html'));
+      assert.ok(r.body.includes('Miyagi Reports - Biblioteca PMO'));
+      assert.ok(r.body.includes('/public/reports-data.json'));
+      assert.ok(!/connect-src[^;]*localhost/.test(r.headers['content-security-policy'] || ''),
+        '/reports must not use the local-library loopback CSP');
+    });
+
+    await testAsync('GET /public/reports-data.json returns generated Roadmap report data', async () => {
+      const r = await get(BASE + '/public/reports-data.json');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.headers['content-type'].includes('application/json'));
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.schemaVersion, 1);
+      assert.ok(data.items.length > 100, 'expected a populated roadmap report directory');
+      assert.ok(data.views.every((view) => view.href.startsWith('/docs#md=')),
+        'overview views should open through SmallDocs hash docs');
     });
 
     await testAsync('GET /version-check?cohort=2026-W15 returns 200', async () => {
@@ -425,6 +453,11 @@ module.exports = function(harness) {
     await testAsync('asset-versioning: /library is versioned', async () => {
       const v = JSON.parse((await get(BASE + '/version-check')).body).version;
       await assertEveryAssetVersioned('/library', v);
+    });
+
+    await testAsync('asset-versioning: /reports is versioned', async () => {
+      const v = JSON.parse((await get(BASE + '/version-check')).body).version;
+      await assertEveryAssetVersioned('/reports', v);
     });
 
     await testAsync('asset-versioning: /agent-changes is versioned', async () => {
