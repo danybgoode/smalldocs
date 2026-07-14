@@ -606,6 +606,28 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Hosted Miyagi PMO report library. This is intentionally separate from
+  // /library, which remains the local-loopback markdown library.
+  if (pathname === '/reports') {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self'",
+      "style-src 'self'",
+      "font-src 'self'",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+      "frame-src 'none'",
+      "object-src 'none'",
+    ].join('; ');
+    serveHtmlWithRewrite(res, path.join(__dirname, 'public', 'reports.html'), null, {
+      'Cache-Control': 'no-cache',
+      'Content-Security-Policy': csp,
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+    });
+    return;
+  }
+
   // Version check — used by service worker to detect updates
   if (pathname === '/version-check') {
     const v = url.searchParams.get('v') || '';
