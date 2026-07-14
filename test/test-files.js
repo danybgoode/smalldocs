@@ -29,6 +29,22 @@ module.exports = function(harness) {
     assert.ok(html.includes('id="_sd_btn-new"'), 'missing #_sd_btn-new');
   });
 
+  test('viewer chrome is branded for Miyagi Reports', () => {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf-8');
+    assert.ok(html.includes('<title>Miyagi Reports</title>'), 'missing Miyagi Reports title');
+    assert.ok(html.includes('toolbar-brand-full">Miyagi Reports</span>'), 'missing full toolbar brand');
+    assert.ok(html.includes('Report Library'), 'missing report library label');
+    assert.ok(!html.includes('SmallDocs - an office suite for coding agents'),
+      'upstream SmallDocs marketing title should not be present');
+  });
+
+  test('default document introduces the report hub', () => {
+    const doc = fs.readFileSync(path.join(__dirname, '..', 'public', 'sdoc.md'), 'utf-8');
+    assert.ok(doc.includes('# Miyagi Reports'), 'default doc should open as Miyagi Reports');
+    assert.ok(/weekly PMO recaps/i.test(doc), 'default doc should describe PMO reports');
+    assert.ok(!doc.includes('Meet `sdoc`'), 'default doc should not be upstream marketing copy');
+  });
+
   test('css/layout.css contains drag-over overlay', () => {
     const css = fs.readFileSync(path.join(__dirname, '..', 'public', 'css', 'layout.css'), 'utf-8');
     assert.ok(css.includes('drag-over'), 'missing drag-over class');
@@ -56,6 +72,12 @@ module.exports = function(harness) {
     assert.ok(js.includes('SDocYaml.parseFrontMatter'), 'missing parseFrontMatter usage');
     assert.ok(js.includes('SDocYaml.serializeFrontMatter'), 'missing serializeFrontMatter usage');
     assert.ok(js.includes('collectStyles'), 'missing collectStyles usage');
+  });
+
+  test('export defaults use report filenames', () => {
+    const js = fs.readFileSync(path.join(__dirname, '..', 'public', 'sdocs-export.js'), 'utf-8');
+    assert.ok(js.includes("'Miyagi Report'"), 'missing branded export title fallback');
+    assert.ok(js.includes("'miyagi-report'"), 'missing branded export filename fallback');
   });
 
   test('sdocs-theme.js has at least 20 Google Fonts', () => {

@@ -718,7 +718,7 @@ function render() {
 // first rendered heading, and fall back to the bare site name for an empty or
 // untitled doc. Kept to a plain textContent read so no markup leaks into the
 // title, and capped so a runaway heading can't produce an absurd tab label.
-var DEFAULT_TITLE = 'SmallDocs';
+var DEFAULT_TITLE = 'Miyagi Reports';
 function updateDocumentTitle() {
   var name = '';
   var meta = S.currentMeta;
@@ -728,13 +728,13 @@ function updateDocumentTitle() {
     if (heading) name = (heading.textContent || '').trim();
   }
   name = name.replace(/\s+/g, ' ');
-  if (name.length > 120) name = name.slice(0, 119).trimEnd() + '…';
-  document.title = name ? name + ' - ' + DEFAULT_TITLE : DEFAULT_TITLE;
+  if (name.length > 120) name = name.slice(0, 117).trimEnd() + '...';
+  document.title = name && name !== DEFAULT_TITLE ? name + ' - ' + DEFAULT_TITLE : DEFAULT_TITLE;
 }
 
 // ── File-info card ─────────────────────────────────────────
 
-var SHORT_LINKS_LEARN_URL = 'https://smalldocs.org/#sec=short-links';
+var SHORT_LINKS_LEARN_URL = '/trust';
 
 function shortenErrorMessage(code) {
   return code === 'rate_limited' ? 'Too many requests, try again later.'
@@ -757,7 +757,7 @@ async function runShortenFlow(btn, errEl) {
   btn.disabled = true;
   btn.classList.add('fic-shorten-loading');
   var originalLabel = btn.textContent;
-  btn.textContent = 'Shortening…';
+  btn.textContent = 'Shortening...';
   if (errEl) errEl.hidden = true;
   try {
     await generateShortLink();
@@ -853,7 +853,7 @@ var BRIDGE_SCREEN_SHARE_OFF_SVG = ''
   + '</svg>';
 
 function dataRowHtml(key, label, value, isLocal, isShort, extraHtml) {
-  var pill = isLocal ? '<span class="fic-local-tag" title="Only visible on this device, not included in shared sdocs">Local only</span>' : '';
+  var pill = isLocal ? '<span class="fic-local-tag" title="Only visible on this device, not included in shared reports">Local only</span>' : '';
   var cls = 'fic-row' + (isShort ? ' fic-row-short' : '');
   return '<div class="' + cls + '" data-key="' + key + '">'
     + '<span class="fic-label">' + label + '</span>'
@@ -916,7 +916,7 @@ function renderFileInfoCard() {
   // points at the canonical production URL so it's shareable from anywhere.
   var blogMatch = /^\/blogs\/[A-Za-z0-9_-]+$/.test(location.pathname || '');
   if (blogMatch) {
-    slots.push({ type: 'data', html: dataRowHtml('shortUrl', 'Short URL', 'https://smalldocs.org' + location.pathname, false, true) });
+    slots.push({ type: 'data', html: dataRowHtml('shortUrl', 'Short URL', location.origin + location.pathname, false, true) });
   }
 
   // Don't offer a short URL for the built-in default document (bare / or
@@ -986,7 +986,7 @@ function renderFileInfoCard() {
       br.innerHTML = ''
         + '<span class="fic-label">Edits</span>'
         + '<span class="fic-value">' + escapeHtml(slot.label) + '</span>'
-        + '<span class="fic-local-tag" title="Only visible on this device, not included in shared sdocs">Local only</span>'
+        + '<span class="fic-local-tag" title="Only visible on this device, not included in shared reports">Local only</span>'
         + '<span class="fic-bridge-icon" title="' + escapeHtml(slot.label) + '">' + icon + '</span>';
       rowsEl.appendChild(br);
     } else if (slot.type === 'request') {
@@ -1033,7 +1033,7 @@ function renderFileInfoCard() {
         + '<span class="fic-label">Short URL</span>'
         + '<button class="fic-shorten-button" title="Generate a short link for this document">Generate</button>'
         + '<span class="fic-short-intro-text">'
-        +   'Encrypted document on our server, but decryption key stays with you '
+        +   'Encrypted report snapshot stored on this server, with the decryption key in the link '
         +   '(<a class="fic-short-intro-learn" href="' + SHORT_LINKS_LEARN_URL + '" target="_blank" rel="noopener">learn more</a>)'
         + '</span>'
         + '<span class="fic-shorten-error" hidden></span>'

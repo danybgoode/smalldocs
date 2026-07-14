@@ -3,30 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmallDocs</title>
-<meta name="description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
+<title>Miyagi Reports</title>
+<meta name="description" content="Internal PMO report hub for weekly recaps, monthly packets, and mobile-ready operational briefings." />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="SmallDocs" />
-<meta property="og:url" content="https://smalldocs.org/" />
-<meta property="og:title" content="SmallDocs - an office suite for coding agents" />
-<meta property="og:description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
-<meta property="og:image" content="https://smalldocs.org/public/homepage/og-preview.png" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="SmallDocs - the document format as intelligent as your agents" />
+<meta property="og:site_name" content="Miyagi Reports" />
+<meta property="og:title" content="Miyagi Reports - PMO report hub" />
+<meta property="og:description" content="Weekly recaps, monthly packets, and mobile-ready operational briefings for Miyagi Sanchez." />
 
 <!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SmallDocs - an office suite for coding agents" />
-<meta name="twitter:description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
-<meta name="twitter:image" content="https://smalldocs.org/public/homepage/og-preview.png" />
-<meta name="twitter:image:alt" content="SmallDocs - the document format as intelligent as your agents" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Miyagi Reports - PMO report hub" />
+<meta name="twitter:description" content="Weekly recaps, monthly packets, and mobile-ready operational briefings for Miyagi Sanchez." />
 
 <meta name="sdocs-default-md" content="__DEFAULT_MD_PATH__">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%232563EB' fill-opacity='.15'/%3E%3Crect x='2' y='2' width='28' height='28' rx='7' stroke='%232563EB' stroke-width='2'/%3E%3Cpath d='M9 11h14M9 16h11M9 21h8' stroke='%232563EB' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%230d2f2b'/%3E%3Cpath d='M8 22V10h3l5 7 5-7h3v12h-3v-7l-4 5h-2l-4-5v7H8Z' fill='%23f2ff5c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/public/css/tokens.css">
 <link rel="stylesheet" href="/public/css/layout.css">
 <link rel="stylesheet" href="/public/css/rendered.css">
@@ -52,10 +44,10 @@
   <!-- ── Left panel ── -->
   <div id="_sd_left">
     <div id="_sd_left-toolbar">
-      <a id="_sd_toolbar-brand" href="#" title="SmallDocs - reset to defaults">
-        <span class="toolbar-brand-text toolbar-brand-full">SmallDocs</span>
-        <span class="toolbar-brand-text toolbar-brand-short">SDocs</span>
-        <span class="toolbar-brand-text toolbar-brand-tiny">SD</span>
+      <a id="_sd_toolbar-brand" href="#" title="Miyagi Reports - reset to defaults">
+        <span class="toolbar-brand-text toolbar-brand-full">Miyagi Reports</span>
+        <span class="toolbar-brand-text toolbar-brand-short">Reports</span>
+        <span class="toolbar-brand-text toolbar-brand-tiny">MR</span>
       </a>
       <div class="toggle-group">
         <button class="btn active" id="_sd_btn-read" data-tip="Read" aria-label="Read">
@@ -102,9 +94,9 @@
           <span class="info-dot" aria-hidden="true"></span>
         </button>
       </div>
-      <a id="_sd_btn-library" href="/library" data-tip="Browse your Markdown files">
+      <a id="_sd_btn-library" href="/library" data-tip="Browse report markdown files">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-        <span class="library-btn-label">Markdown Library</span>
+        <span class="library-btn-label">Report Library</span>
       </a>
     </div>
     <div id="_sd_write-toolbar">
@@ -174,7 +166,7 @@
     <div id="_sd_content-area" tabindex="0">
       <div id="_sd_sdocs-file-info" hidden>
         <div class="fic-rows"></div>
-        <span class="fic-privacy-note" hidden>Local only rows aren't included in shared sdocs</span>
+        <span class="fic-privacy-note" hidden>Local only rows are not included in shared reports</span>
       </div>
       <div id="_sd_rendered"></div>
       <div id="_sd_write" contenteditable="true" spellcheck="true"></div>
@@ -732,50 +724,49 @@
     <div id="_sd_info-panel-header">Info</div>
     <div id="_sd_info-panel-body">
       <div class="info-section">
-        <div class="info-section-title">Community</div>
-        <p class="info-section-text">Questions, ideas, or want to follow along? <a href="https://discord.gg/txjATTsDaq" target="_blank" rel="noopener">Join our Discord</a>.</p>
+        <div class="info-section-title">Report hub</div>
+        <p class="info-section-text">Daily, weekly, and monthly operational reports are rendered here for review and Telegram delivery.</p>
       </div>
       <div class="info-settings">
         <div class="info-settings-row">
-          <span class="info-settings-label">Notify me about new features</span>
-          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Notify me about new features">
+          <span class="info-settings-label">Notify me about report hub notes</span>
+          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Notify me about report hub notes">
             <button class="btn" id="_sd_info-notify-on" role="radio" aria-checked="true">On</button>
             <button class="btn" id="_sd_info-notify-off" role="radio" aria-checked="false">Off</button>
           </div>
         </div>
-        <p class="info-settings-help">When off, the info icon won't show a dot for unseen updates. Open this panel any time to check.</p>
+        <p class="info-settings-help">When off, the info icon will not show a dot for unseen notes. Open this panel any time to check.</p>
       </div>
       <div class="info-section">
-        <div class="info-section-title">New features</div>
+        <div class="info-section-title">Hub notes</div>
         <ul id="_sd_info-features" class="info-feature-list"></ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Blog posts</div>
+        <div class="info-section-title">Process</div>
         <ul class="info-links">
-          <li><a href="/blogs/journey-to-pdf-generation" target="_blank" rel="noopener">The surprisingly complex journey to text-selectable client-side generated PDFs</a><span class="info-links-desc">How we built selectable-text PDFs in the browser.</span></li>
+          <li><a href="/trust" target="_blank" rel="noopener">Verify server</a><span class="info-links-desc">Compare served assets with the published manifest.</span></li>
         </ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Feedback</div>
-        <textarea id="_sd_info-feedback" rows="6" placeholder="Tell us what's working, what's broken, what you'd like to see."></textarea>
+        <div class="info-section-title">Report notes</div>
+        <textarea id="_sd_info-feedback" rows="6" placeholder="Capture report hub feedback or a delivery issue."></textarea>
         <p id="_sd_info-feedback-warning" class="info-feedback-warning" hidden>
-          That looks like an email address. Feedback is displayed publicly, so remove it if you don't want it shared.
+          That looks like an email address. Remove it unless the note needs a contact path.
         </p>
         <div class="info-feedback-actions">
           <button class="btn" id="_sd_info-feedback-send">Send</button>
           <span id="_sd_info-feedback-status" class="info-feedback-status" aria-live="polite"></span>
         </div>
         <p class="info-feedback-note">
-          Displayed publicly at <a href="/feedback" target="_blank" rel="noopener">smalldocs.org/feedback</a>.
-          Stored in a small SQLite database on our server. We store the message and a timestamp, nothing else. Don't include personal info.
+          Stored in this server's feedback endpoint with the message and timestamp. Do not include secrets or credentials.
         </p>
       </div>
       <div class="info-section">
         <div class="info-section-title">Links</div>
         <ul class="info-links">
-          <li><a href="/feedback" target="_blank" rel="noopener">Read feedback</a><span class="info-links-desc">What other users have sent in.</span></li>
-          <li><a href="/analytics" target="_blank" rel="noopener">Analytics</a><span class="info-links-desc">Visit counts, cohorts, devices.</span></li>
-          <li><a href="https://smalldocs.org/" target="_blank" rel="noopener">Learn about SmallDocs</a><span class="info-links-desc">How the app works and why.</span></li>
+          <li><a href="/feedback" target="_blank" rel="noopener">Read notes</a><span class="info-links-desc">Feedback submitted through this hub.</span></li>
+          <li><a href="/analytics" target="_blank" rel="noopener">Analytics</a><span class="info-links-desc">Anonymous visit counts and device cohorts.</span></li>
+          <li><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener">SmallDocs fork</a><span class="info-links-desc">Source for the renderer underneath this hub.</span></li>
         </ul>
       </div>
     </div>
@@ -789,12 +780,12 @@
 <div id="_sd_statusbar">
   <span id="_sd_status-text"></span>
   <span id="_sd_sb-links" style="margin-left:auto; font-size:11.5px; color:var(--text-2); display:flex; align-items:center; gap:6px; flex-wrap:nowrap; justify-content:flex-end; min-width:0">
-    <span class="sb-item" id="sb-private"><a href="https://smalldocs.org/#sec=privacy" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">100% private</a></span>
-    <span class="sb-item" id="sb-trust" data-trust-status>Open source: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verify server</a></span>
-    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">CLI for you &amp; your agents:</span> <span id="_sd_cli-prompt-wrap" style="display:inline-flex; align-items:center; gap:3px; cursor:pointer" title="Copy a prompt that asks your coding agent to install and set up SmallDocs"><code id="_sd_cli-prompt-label" style="background:var(--bg-surface); border:1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius:3px; padding:1px 5px; font-size:11px; color:var(--accent); transition:border-color .15s">Copy install prompt</code><button id="_sd_cli-prompt-btn" style="background:none; border:none; cursor:pointer; color:var(--accent); padding:0; vertical-align:middle; opacity:0.5; transition:opacity .15s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></span><span id="_sd_cli-install-wrap" style="align-items:center; gap:3px; cursor:pointer" title="Click to copy the install command for your system"><code id="_sd_cli-install-cmd" style="background:var(--bg-surface); border:1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius:3px; padding:1px 5px; font-size:11px; color:var(--accent); transition:border-color .15s">curl -fsSL https://smalldocs.org/install | sh</code><button id="_sd_cli-copy-btn" style="background:none; border:none; cursor:pointer; color:var(--accent); padding:0; vertical-align:middle; opacity:0.5; transition:opacity .15s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></span></span>
-    <span class="sb-item" id="sb-discord"><a href="https://discord.gg/txjATTsDaq" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Discord</a></span>
-    <span class="sb-item" id="sb-github"><a href="https://github.com/espressoplease/smalldocs" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">GitHub</a></span>
-    <span class="sb-item" id="sb-business"><a href="/business" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">For business</a></span>
+    <span class="sb-item" id="sb-private"><a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Client-side renderer</a></span>
+    <span class="sb-item" id="sb-trust" data-trust-status>SmallDocs fork: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verify server</a></span>
+    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">Report links:</span> encrypted snapshots, readable from Telegram</span>
+    <span class="sb-item" id="sb-discord">Miyagi Reports</span>
+    <span class="sb-item" id="sb-github"><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">GitHub</a></span>
+    <span class="sb-item" id="sb-business"><a href="/" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Report hub</a></span>
     <span class="sb-item" id="sb-terms">You agree to our <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Terms</a></span>
   </span>
 </div>
@@ -821,17 +812,16 @@
   }
 
   // Someone reading a document arrived via a #md= hash, so they are likely
-  // already a SmallDocs user: frame the footer around updating, not installing.
-  // Everyone else (root, /new, blog) gets the install framing. The copied
-  // prompt installs-or-updates either way, so the framing is just labelling.
+  // already using the report renderer: frame the footer around updating, not installing.
+  // The upstream CLI footer controls may be absent in this fork, but the script
+  // still guards each lookup so shared viewer modules can keep loading.
   var isDocPage = /(^|[#&])md=/.test(location.hash || '');
 
-  // Command chip. On a doc page it offers the canonical update verb; otherwise
-  // the OS-correct install command (curl on macOS / Linux, npm on Windows,
-  // which has no POSIX shell to run the installer).
+  // Command chip. The Miyagi footer omits the chip, but older shells and
+  // reused pages can still receive a harmless update command.
   var CLI = window.SDocCliSetup || {};
   var isWindows = CLI.isWindows ? CLI.isWindows() : false;
-  var installCmd = CLI.installCommand ? CLI.installCommand(isWindows) : "curl -fsSL https://smalldocs.org/install | sh";
+  var installCmd = CLI.installCommand ? CLI.installCommand(isWindows) : 'sdoc upgrade';
   var cmd = isDocPage ? 'sdoc upgrade' : installCmd;
   var cmdEl = document.getElementById('_sd_cli-install-cmd');
   if (cmdEl) cmdEl.textContent = cmd;
@@ -840,7 +830,7 @@
     var label = document.getElementById('_sd_cli-prompt-label');
     if (label) label.textContent = 'Copy update prompt';
     var pwrap = document.getElementById('_sd_cli-prompt-wrap');
-    if (pwrap) pwrap.title = 'Copy a prompt that asks your coding agent to update SmallDocs and learn its latest features';
+    if (pwrap) pwrap.title = 'Copy a prompt that asks your coding agent to update the report renderer and learn its latest features';
     var iwrap = document.getElementById('_sd_cli-install-wrap');
     if (iwrap) iwrap.title = 'Click to copy the update command';
   }
@@ -929,12 +919,13 @@
   }
 
   // Light engagement nudge. Once someone has opened a few distinct documents
-  // they are clearly using SmallDocs, so invite them to the community once.
+  // they are clearly using the report renderer. Community nudges are disabled
+  // for the Miyagi report hub because Telegram is the primary review rail.
   // Counting is entirely client-side (localStorage); nothing is sent anywhere.
-  var DISCORD_URL = 'https://discord.gg/txjATTsDaq';
+  var DISCORD_URL = '/';
   var DOC_OPENS_KEY = '_sd_doc_opens';
   var DISCORD_DISMISS_KEY = '_sd_discord_invite_dismissed';
-  var DISCORD_THRESHOLD = 3;
+  var DISCORD_THRESHOLD = Infinity;
 
   if (isDocPage) { try { recordDocOpenAndMaybeInvite(); } catch (_) {} }
 
@@ -973,13 +964,13 @@
       while (el.firstChild) el.removeChild(el.firstChild);
       var text = document.createElement('span');
       text.className = 'sd-discord-banner-text';
-      text.textContent = "Please join our Discord. We'd love to get to know you better & improve SmallDocs based on your feedback.";
+      text.textContent = "Report hub feedback belongs in the existing PMO operations thread.";
       var join = document.createElement('a');
       join.className = 'sd-discord-banner-join';
       join.href = DISCORD_URL;
       join.target = '_blank';
       join.rel = 'noopener';
-      join.textContent = 'Join the Discord';
+      join.textContent = 'Open report hub';
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'sd-discord-banner-dismiss';

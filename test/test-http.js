@@ -79,7 +79,7 @@ module.exports = function(harness) {
       const r = await get(BASE + '/docs');
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('SDocs'));
+      assert.ok(r.body.includes('Miyagi Reports'));
       assert.ok(r.body.includes('/public/sdoc.md'),
         '/docs should default to sdoc.md');
     });
@@ -88,7 +88,7 @@ module.exports = function(harness) {
       const r = await get(BASE + '/new');
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('SDocs'));
+      assert.ok(r.body.includes('Miyagi Reports'));
     });
 
     await testAsync('GET /nonexistent returns 404', async () => {
@@ -341,7 +341,7 @@ module.exports = function(harness) {
       const r = await get(BASE + '/s/' + createdId);
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('sdocs-app.js'), 'should serve the SDocs index');
+      assert.ok(r.body.includes('sdocs-app.js'), 'should serve the Miyagi Reports index');
     });
 
     // ── Asset cache-busting ──────────────────────────

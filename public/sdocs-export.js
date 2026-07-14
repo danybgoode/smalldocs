@@ -175,7 +175,7 @@ function buildExportHTML(mermaidImages) {
   var fontLink = S.GOOGLE_FONTS.includes(fontName)
     ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName) + ':wght@400;500;600;700&display=swap">'
     : '';
-  var title = (S.currentMeta.title || 'Document').replace(/</g,'&lt;');
+  var title = (S.currentMeta.title || 'Miyagi Report').replace(/</g,'&lt;');
   var clone = S.renderedEl.cloneNode(true);
   inlineCharts(clone);
   inlineMermaid(clone, mermaidImages);
@@ -1426,7 +1426,7 @@ async function exportPDF() {
     var blob = new Blob([result.bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'document').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
+    a.download = (S.currentMeta.title || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     if (result.dropped > 0) {
@@ -1461,7 +1461,7 @@ function loadHtmlToDocx() {
 }
 
 async function exportWord() {
-  S.setStatus('Generating Word document\u2026');
+  S.setStatus('Generating Word document...');
   try {
     await loadHtmlToDocx();
     var closed = expandAllSections();
@@ -1475,7 +1475,7 @@ async function exportWord() {
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'document').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
+    a.download = (S.currentMeta.title || 'miyagi-report').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
     a.click();
     URL.revokeObjectURL(a.href);
     S.setStatus('Exported Word .docx');
@@ -1512,7 +1512,7 @@ async function exportSlidesPdf() {
     S.setStatus('Slide PDF renderer not loaded');
     return;
   }
-  S.setStatus('Generating slide PDF\u2026');
+  S.setStatus('Generating slide PDF...');
   try {
     await loadPdfLib();
     var PDFDocument = PDFLib.PDFDocument;
@@ -1525,7 +1525,7 @@ async function exportSlidesPdf() {
     var dropCounter = { count: 0 };
 
     for (var i = 0; i < sources.length; i++) {
-      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '\u2026');
+      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '...');
       var dsl = sources[i].getAttribute('data-dsl');
       // Size each page to its own slide's grid aspect. A fixed 1280x720
       // page distorts any deck that isn't 16:9 (e.g. grid 4 3).
@@ -1546,7 +1546,7 @@ async function exportSlidesPdf() {
     var blob = new Blob([bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = ((S.currentMeta && S.currentMeta.title) || 'slides').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     S.setStatus('Slides PDF downloaded');
@@ -1570,7 +1570,7 @@ async function exportSlidesPptx() {
     S.setStatus('Slide PPTX renderer not loaded');
     return;
   }
-  S.setStatus('Generating PowerPoint…');
+  S.setStatus('Generating PowerPoint...');
   try {
     await loadPptxGen();
     var pres = new window.PptxGenJS();
@@ -1593,7 +1593,7 @@ async function exportSlidesPptx() {
 
     var totalWarnings = 0;
     for (var i = 0; i < sources.length; i++) {
-      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '…');
+      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '...');
       var dsl = sources[i].getAttribute('data-dsl');
       var slide = pres.addSlide();
       var res = await window.SDocSlidePptx.drawSlide({
@@ -1603,7 +1603,7 @@ async function exportSlidesPptx() {
       if (res && res.warnings) totalWarnings += res.warnings;
     }
 
-    var name = ((S.currentMeta && S.currentMeta.title) || 'slides').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
+    var name = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
     var blob = await pres.write({ outputType: 'blob' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -1632,14 +1632,14 @@ var pptxBtn = document.getElementById('_sd_exp-slides-pptx');
 if (pptxBtn) pptxBtn.addEventListener('click', exportSlidesPptx);
 
 document.getElementById('_sd_exp-raw').addEventListener('click', function() {
-  download('document.md', S.currentBody);
+  download('miyagi-report.md', S.currentBody);
   S.setStatus('Exported raw .md');
 });
 
 document.getElementById('_sd_exp-styled').addEventListener('click', function() {
   var meta = Object.assign({}, S.currentMeta, { styles: S.collectStyles() });
   var fm = SDocYaml.serializeFrontMatter(meta);
-  download('document.md', fm + '\n' + S.currentBody);
+  download('miyagi-report.md', fm + '\n' + S.currentBody);
   S.setStatus('Exported styled .md with YAML front matter');
 });
 
