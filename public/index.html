@@ -39,7 +39,6 @@
 <body>
 
 <div id="_sd_safari-banner" hidden></div>
-<div id="_sd_discord-banner" hidden></div>
 <div id="_sd_main">
   <!-- ── Left panel ── -->
   <div id="_sd_left">
@@ -791,8 +790,6 @@
 </div>
 <pre id="_sd_cli-prompt-text" style="display:none"></pre>
 <style>
-  #_sd_cli-install-wrap:hover #_sd_cli-copy-btn { opacity: 1 !important; }
-  #_sd_cli-install-wrap:hover #_sd_cli-install-cmd { border-color: var(--accent) !important; }
   #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-btn { opacity: 1 !important; }
   #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-label { border-color: var(--accent) !important; }
 </style>
@@ -812,34 +809,17 @@
   }
 
   // Someone reading a document arrived via a #md= hash, so they are likely
-  // already using the report renderer: frame the footer around updating, not installing.
-  // The upstream CLI footer controls may be absent in this fork, but the script
-  // still guards each lookup so shared viewer modules can keep loading.
+  // already using the report renderer: frame the footer around updating.
   var isDocPage = /(^|[#&])md=/.test(location.hash || '');
 
-  // Command chip. The Miyagi footer omits the chip, but older shells and
-  // reused pages can still receive a harmless update command.
   var CLI = window.SDocCliSetup || {};
-  var isWindows = CLI.isWindows ? CLI.isWindows() : false;
-  var installCmd = CLI.installCommand ? CLI.installCommand(isWindows) : 'sdoc upgrade';
-  var cmd = isDocPage ? 'sdoc upgrade' : installCmd;
-  var cmdEl = document.getElementById('_sd_cli-install-cmd');
-  if (cmdEl) cmdEl.textContent = cmd;
 
   if (isDocPage) {
     var label = document.getElementById('_sd_cli-prompt-label');
     if (label) label.textContent = 'Copiar prompt de actualizacion';
     var pwrap = document.getElementById('_sd_cli-prompt-wrap');
     if (pwrap) pwrap.title = 'Copia un prompt para pedir al agente que actualice el renderer y aprenda sus funciones recientes';
-    var iwrap = document.getElementById('_sd_cli-install-wrap');
-    if (iwrap) iwrap.title = 'Click to copy the update command';
   }
-
-  bindCopy(
-    document.getElementById('_sd_cli-install-wrap'),
-    document.getElementById('_sd_cli-copy-btn'),
-    function () { return cmd; }
-  );
 
   var promptEl = document.getElementById('_sd_cli-prompt-text');
   if (promptEl && CLI.SETUP_PROMPT) promptEl.textContent = CLI.SETUP_PROMPT;
@@ -912,76 +892,9 @@
       var rel = timeAgo(info.time);
       if (!rel) return;
       leadEl.title = (info.version ? 'sdoc v' + info.version : 'sdoc') +
-        ', published ' + new Date(info.time).toLocaleString() + ' (' + rel + ')';
+        ', publicado ' + new Date(info.time).toLocaleString() + ' (' + rel + ')';
       scheduleFit();
     }).catch(function () { /* keep the neutral lead-in */ });
-  }
-
-  // Light engagement nudge. Once someone has opened a few distinct documents
-  // they are clearly using the report renderer. Community nudges are disabled
-  // for the Miyagi report hub because Telegram is the primary review rail.
-  // Counting is entirely client-side (localStorage); nothing is sent anywhere.
-  var DISCORD_URL = '/';
-  var DOC_OPENS_KEY = '_sd_doc_opens';
-  var DISCORD_DISMISS_KEY = '_sd_discord_invite_dismissed';
-  var DISCORD_THRESHOLD = Infinity;
-
-  if (isDocPage) { try { recordDocOpenAndMaybeInvite(); } catch (_) {} }
-
-  function docFingerprint() {
-    var h = location.hash || '';
-    var m = /[#&]md=([^&]+)/.exec(h);
-    var v = m ? m[1] : h;
-    return v.slice(0, 48);
-  }
-
-  function recordDocOpenAndMaybeInvite() {
-    try { if (localStorage.getItem(DISCORD_DISMISS_KEY) === '1') return; } catch (_) { return; }
-    var fp = docFingerprint();
-    if (!fp) return;
-    var seen = [];
-    try { seen = JSON.parse(localStorage.getItem(DOC_OPENS_KEY) || '[]'); } catch (_) { seen = []; }
-    if (!Array.isArray(seen)) seen = [];
-    if (seen.indexOf(fp) === -1) {
-      seen.push(fp);
-      if (seen.length > 20) seen = seen.slice(-20);
-      try { localStorage.setItem(DOC_OPENS_KEY, JSON.stringify(seen)); } catch (_) {}
-    }
-    if (seen.length >= DISCORD_THRESHOLD) showDiscordBanner();
-  }
-
-  function dismissDiscordBanner() {
-    try { localStorage.setItem(DISCORD_DISMISS_KEY, '1'); } catch (_) {}
-    var el = document.getElementById('_sd_discord-banner');
-    if (el) el.hidden = true;
-  }
-
-  function showDiscordBanner() {
-    var el = document.getElementById('_sd_discord-banner');
-    if (!el) return;
-    if (!el.dataset.rendered) {
-      while (el.firstChild) el.removeChild(el.firstChild);
-      var text = document.createElement('span');
-      text.className = 'sd-discord-banner-text';
-      text.textContent = "El feedback del hub pertenece al hilo operativo PMO existente.";
-      var join = document.createElement('a');
-      join.className = 'sd-discord-banner-join';
-      join.href = DISCORD_URL;
-      join.target = '_blank';
-      join.rel = 'noopener';
-      join.textContent = 'Abrir hub';
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'sd-discord-banner-dismiss';
-      btn.setAttribute('aria-label', 'Cerrar');
-      btn.textContent = '×'; // multiplication sign
-      btn.addEventListener('click', dismissDiscordBanner);
-      el.appendChild(text);
-      el.appendChild(join);
-      el.appendChild(btn);
-      el.dataset.rendered = '1';
-    }
-    el.hidden = false;
   }
 
   function timeAgo(iso) {

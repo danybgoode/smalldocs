@@ -3,12 +3,14 @@
     "id": 1,
     "date": "2026-07-14",
     "title": "Marca Miyagi para reportes",
-    "body": "El visor ahora abre con el marco de Miyagi Reports, valores iniciales de reportes y lenguaje de paquetes PMO."
+    "body": "El visor ahora abre con el marco de Miyagi Reports, valores iniciales de reportes y lenguaje de paquetes PMO.",
+    "link": "/docs"
   },
   {
     "id": 0,
     "date": "2026-07-14",
     "title": "Paquetes legibles desde el celular",
-    "body": "Las historias diarias, recapitulaciones semanales y paquetes mensuales deben revisarse bien desde Telegram."
+    "body": "Las historias diarias, recapitulaciones semanales y paquetes mensuales deben revisarse bien desde Telegram.",
+    "link": "/trust"
   }
 ]

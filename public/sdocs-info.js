@@ -45,12 +45,12 @@ function relativeDate(iso) {
   var today = new Date();
   today.setHours(0, 0, 0, 0);
   var days = Math.round((today - then) / 86400000);
-  if (days <= 0) return 'today';
-  if (days === 1) return 'yesterday';
-  if (days < 7) return days + ' days ago';
-  if (days < 14) return '1 week ago';
-  if (days < 60) return Math.floor(days / 7) + ' weeks ago';
-  if (days < 365) return Math.floor(days / 30) + ' months ago';
+  if (days <= 0) return 'hoy';
+  if (days === 1) return 'ayer';
+  if (days < 7) return 'hace ' + days + ' dias';
+  if (days < 14) return 'hace 1 semana';
+  if (days < 60) return 'hace ' + Math.floor(days / 7) + ' semanas';
+  if (days < 365) return 'hace ' + Math.floor(days / 30) + ' meses';
   return iso;
 }
 
@@ -61,7 +61,7 @@ function renderFeatures(seenAtRender) {
   if (!feed.length) {
     var empty = document.createElement('li');
     empty.className = 'info-feature-empty';
-    empty.textContent = 'No updates yet.';
+    empty.textContent = 'Sin notas todavia.';
     list.appendChild(empty);
     return;
   }
@@ -74,8 +74,8 @@ function renderFeatures(seenAtRender) {
       li.classList.add('is-new');
       var marker = document.createElement('span');
       marker.className = 'info-feature-new';
-      marker.title = 'New since your last visit';
-      marker.setAttribute('aria-label', 'New');
+      marker.title = 'Nuevo desde tu ultima visita';
+      marker.setAttribute('aria-label', 'Nuevo');
       li.appendChild(marker);
     }
 
@@ -99,7 +99,7 @@ function renderFeatures(seenAtRender) {
       a.target = '_blank';
       a.rel = 'noopener';
       a.className = 'info-feature-link';
-      a.textContent = 'Open';
+      a.textContent = 'Abrir';
       meta.appendChild(a);
     }
     li.appendChild(meta);
@@ -207,11 +207,11 @@ function wireFeedback() {
 
   btn.addEventListener('click', function () {
     var msg = (ta.value || '').trim();
-    if (!msg) { setStatus('Type a message first.', 'warn'); return; }
-    if (msg.length > 4096) { setStatus('Message too long (max 4 KB).', 'warn'); return; }
+    if (!msg) { setStatus('Escribe un mensaje primero.', 'warn'); return; }
+    if (msg.length > 4096) { setStatus('Mensaje demasiado largo (max 4 KB).', 'warn'); return; }
 
     btn.disabled = true;
-    setStatus('Sending...', '');
+    setStatus('Enviando...', '');
 
     fetch('/api/feedback', {
       method: 'POST',
@@ -220,16 +220,16 @@ function wireFeedback() {
     }).then(function (r) {
       if (r.ok) {
         ta.value = '';
-        setStatus('Thanks. Got it.', 'ok');
+        setStatus('Listo. Recibido.', 'ok');
       } else if (r.status === 429) {
-        setStatus('Too many submissions. Try again later.', 'warn');
+        setStatus('Demasiados envios. Intenta mas tarde.', 'warn');
       } else if (r.status === 413) {
-        setStatus('Message too long.', 'warn');
+        setStatus('Mensaje demasiado largo.', 'warn');
       } else {
-        setStatus('Could not send. Try again.', 'warn');
+        setStatus('No se pudo enviar. Intenta de nuevo.', 'warn');
       }
     }).catch(function () {
-      setStatus('Network error. Try again.', 'warn');
+      setStatus('Error de red. Intenta de nuevo.', 'warn');
     }).finally(function () {
       btn.disabled = false;
     });
