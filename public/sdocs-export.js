@@ -175,7 +175,7 @@ function buildExportHTML(mermaidImages) {
   var fontLink = S.GOOGLE_FONTS.includes(fontName)
     ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName) + ':wght@400;500;600;700&display=swap">'
     : '';
-  var title = (S.currentMeta.title || 'Miyagi Report').replace(/</g,'&lt;');
+  var title = ((S.currentMeta && S.currentMeta.title) || 'Miyagi Report').replace(/</g,'&lt;');
   var clone = S.renderedEl.cloneNode(true);
   inlineCharts(clone);
   inlineMermaid(clone, mermaidImages);
@@ -1426,7 +1426,7 @@ async function exportPDF() {
     var blob = new Blob([result.bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     if (result.dropped > 0) {
@@ -1475,7 +1475,7 @@ async function exportWord() {
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'miyagi-report').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
     a.click();
     URL.revokeObjectURL(a.href);
     S.setStatus('Exported Word .docx');

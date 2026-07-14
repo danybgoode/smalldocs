@@ -2,13 +2,13 @@
   {
     "id": 1,
     "date": "2026-07-14",
-    "title": "Miyagi report hub branding",
-    "body": "The viewer now opens with Miyagi Reports chrome, report-oriented defaults, and PMO packet language."
+    "title": "Marca Miyagi para reportes",
+    "body": "El visor ahora abre con el marco de Miyagi Reports, valores iniciales de reportes y lenguaje de paquetes PMO."
   },
   {
     "id": 0,
     "date": "2026-07-14",
-    "title": "Report packets stay mobile-first",
-    "body": "Daily story decks, weekly recaps, and monthly packets should stay readable from Telegram on a phone."
+    "title": "Paquetes legibles desde el celular",
+    "body": "Las historias diarias, recapitulaciones semanales y paquetes mensuales deben revisarse bien desde Telegram."
   }
 ]

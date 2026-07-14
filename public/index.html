@@ -899,10 +899,9 @@
   // Text metrics shift the moment the web font swaps in; re-fit then.
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
 
-  // On a doc page, fold how long ago the newest CLI shipped into the lead-in
-  // itself ("CLI update released 2 hours ago:") - a quiet nudge for anyone
-  // running an older copy. The server caches the npm lookup; if it is
-  // unavailable the lead-in keeps its neutral text rather than a wrong figure.
+  // On a doc page, keep the visible footer about report links. If the server
+  // can resolve the newest CLI build, attach that maintenance note as a title
+  // so it does not corrupt the Report Links label.
   if (isDocPage) {
     var leadEl = document.getElementById('_sd_cli-lead');
     fetch('/cli-latest').then(function (r) {
@@ -912,8 +911,8 @@
       if (!leadEl || !info || !info.time) return;
       var rel = timeAgo(info.time);
       if (!rel) return;
-      leadEl.textContent = 'CLI update released ' + rel + ':';
-      if (info.version) leadEl.title = 'sdoc v' + info.version + ', published ' + new Date(info.time).toLocaleString();
+      leadEl.title = (info.version ? 'sdoc v' + info.version : 'sdoc') +
+        ', published ' + new Date(info.time).toLocaleString() + ' (' + rel + ')';
       scheduleFit();
     }).catch(function () { /* keep the neutral lead-in */ });
   }

@@ -78,6 +78,20 @@ module.exports = function(harness) {
     const js = fs.readFileSync(path.join(__dirname, '..', 'public', 'sdocs-export.js'), 'utf-8');
     assert.ok(js.includes("'Miyagi Report'"), 'missing branded export title fallback');
     assert.ok(js.includes("'miyagi-report'"), 'missing branded export filename fallback');
+    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'Miyagi Report'"),
+      'branded export title fallback should tolerate missing metadata');
+    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'miyagi-report'"),
+      'branded export filename fallback should tolerate missing metadata');
+  });
+
+  test('notification feed is localized for es-MX', () => {
+    const feed = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'notifications.json'), 'utf-8'));
+    const text = feed.map(item => `${item.title} ${item.body}`).join(' ');
+    assert.ok(feed.length >= 1, 'notifications feed should not be empty');
+    assert.ok(!/\b(the|now|with|weekly|daily|monthly|should|from|phone)\b/i.test(text),
+      'notifications should avoid English operational copy');
+    assert.ok(/\b(reporte|reportes|celular|semanal|mensual|diarias)\b/i.test(text),
+      'notifications should read as es-MX report copy');
   });
 
   test('sdocs-theme.js has at least 20 Google Fonts', () => {
