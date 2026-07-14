@@ -676,14 +676,3 @@ textarea#_sd_info-feedback:focus {
   color: var(--text-2);
 }
 #_sd_sb-links #sb-cli { display: inline-flex; align-items: center; gap: 6px; }
-/* Install-command chip. display lives here (not inline) so fitFooter's
-   reset (clearing the inline display) restores the chip to inline-flex
-   rather than a plain inline span. */
-#_sd_sb-links #_sd_cli-install-wrap { display: inline-flex; }
-/* Separator between the prompt chip and the install command inside the
-   CLI item; hidden with the install command at the first breakpoint. */
-#_sd_sb-links #_sd_cli-install-wrap::before {
-  content: "\00B7";
-  margin-right: 6px;
-  color: var(--text-2);
-}

@@ -1,32 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmallDocs</title>
-<meta name="description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
+<title>Miyagi Reports</title>
+<meta name="description" content="Hub interno PMO para recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil." />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="SmallDocs" />
-<meta property="og:url" content="https://smalldocs.org/" />
-<meta property="og:title" content="SmallDocs - an office suite for coding agents" />
-<meta property="og:description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
-<meta property="og:image" content="https://smalldocs.org/public/homepage/og-preview.png" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="SmallDocs - the document format as intelligent as your agents" />
+<meta property="og:site_name" content="Miyagi Reports" />
+<meta property="og:title" content="Miyagi Reports - Hub de reportes PMO" />
+<meta property="og:description" content="Recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil para Miyagi Sanchez." />
 
 <!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SmallDocs - an office suite for coding agents" />
-<meta name="twitter:description" content="An office suite your existing coding agents use to write documents, charts, slides, sheets, and forms." />
-<meta name="twitter:image" content="https://smalldocs.org/public/homepage/og-preview.png" />
-<meta name="twitter:image:alt" content="SmallDocs - the document format as intelligent as your agents" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Miyagi Reports - Hub de reportes PMO" />
+<meta name="twitter:description" content="Recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil para Miyagi Sanchez." />
 
 <meta name="sdocs-default-md" content="__DEFAULT_MD_PATH__">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%232563EB' fill-opacity='.15'/%3E%3Crect x='2' y='2' width='28' height='28' rx='7' stroke='%232563EB' stroke-width='2'/%3E%3Cpath d='M9 11h14M9 16h11M9 21h8' stroke='%232563EB' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%230d2f2b'/%3E%3Cpath d='M8 22V10h3l5 7 5-7h3v12h-3v-7l-4 5h-2l-4-5v7H8Z' fill='%23f2ff5c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/public/css/tokens.css">
 <link rel="stylesheet" href="/public/css/layout.css">
 <link rel="stylesheet" href="/public/css/rendered.css">
@@ -47,15 +39,14 @@
 <body>
 
 <div id="_sd_safari-banner" hidden></div>
-<div id="_sd_discord-banner" hidden></div>
 <div id="_sd_main">
   <!-- ── Left panel ── -->
   <div id="_sd_left">
     <div id="_sd_left-toolbar">
-      <a id="_sd_toolbar-brand" href="#" title="SmallDocs - reset to defaults">
-        <span class="toolbar-brand-text toolbar-brand-full">SmallDocs</span>
-        <span class="toolbar-brand-text toolbar-brand-short">SDocs</span>
-        <span class="toolbar-brand-text toolbar-brand-tiny">SD</span>
+      <a id="_sd_toolbar-brand" href="#" title="Miyagi Reports - volver a valores iniciales">
+        <span class="toolbar-brand-text toolbar-brand-full">Miyagi Reports</span>
+        <span class="toolbar-brand-text toolbar-brand-short">Reportes</span>
+        <span class="toolbar-brand-text toolbar-brand-tiny">MR</span>
       </a>
       <div class="toggle-group">
         <button class="btn active" id="_sd_btn-read" data-tip="Read" aria-label="Read">
@@ -102,9 +93,9 @@
           <span class="info-dot" aria-hidden="true"></span>
         </button>
       </div>
-      <a id="_sd_btn-library" href="/library" data-tip="Browse your Markdown files">
+      <a id="_sd_btn-library" href="/library" data-tip="Explorar archivos Markdown de reportes">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-        <span class="library-btn-label">Markdown Library</span>
+        <span class="library-btn-label">Biblioteca de reportes</span>
       </a>
     </div>
     <div id="_sd_write-toolbar">
@@ -174,7 +165,7 @@
     <div id="_sd_content-area" tabindex="0">
       <div id="_sd_sdocs-file-info" hidden>
         <div class="fic-rows"></div>
-        <span class="fic-privacy-note" hidden>Local only rows aren't included in shared sdocs</span>
+        <span class="fic-privacy-note" hidden>Las filas solo locales no se incluyen en reportes compartidos</span>
       </div>
       <div id="_sd_rendered"></div>
       <div id="_sd_write" contenteditable="true" spellcheck="true"></div>
@@ -732,50 +723,49 @@
     <div id="_sd_info-panel-header">Info</div>
     <div id="_sd_info-panel-body">
       <div class="info-section">
-        <div class="info-section-title">Community</div>
-        <p class="info-section-text">Questions, ideas, or want to follow along? <a href="https://discord.gg/txjATTsDaq" target="_blank" rel="noopener">Join our Discord</a>.</p>
+        <div class="info-section-title">Hub de reportes</div>
+        <p class="info-section-text">Los reportes operativos diarios, semanales y mensuales se renderizan aqui para revision y entrega por Telegram.</p>
       </div>
       <div class="info-settings">
         <div class="info-settings-row">
-          <span class="info-settings-label">Notify me about new features</span>
-          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Notify me about new features">
-            <button class="btn" id="_sd_info-notify-on" role="radio" aria-checked="true">On</button>
-            <button class="btn" id="_sd_info-notify-off" role="radio" aria-checked="false">Off</button>
+          <span class="info-settings-label">Avisarme sobre notas del hub</span>
+          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Avisarme sobre notas del hub">
+            <button class="btn" id="_sd_info-notify-on" role="radio" aria-checked="true">Si</button>
+            <button class="btn" id="_sd_info-notify-off" role="radio" aria-checked="false">No</button>
           </div>
         </div>
-        <p class="info-settings-help">When off, the info icon won't show a dot for unseen updates. Open this panel any time to check.</p>
+        <p class="info-settings-help">Cuando este apagado, el icono de info no mostrara punto por notas no vistas. Puedes abrir este panel cuando quieras.</p>
       </div>
       <div class="info-section">
-        <div class="info-section-title">New features</div>
+        <div class="info-section-title">Notas del hub</div>
         <ul id="_sd_info-features" class="info-feature-list"></ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Blog posts</div>
+        <div class="info-section-title">Proceso</div>
         <ul class="info-links">
-          <li><a href="/blogs/journey-to-pdf-generation" target="_blank" rel="noopener">The surprisingly complex journey to text-selectable client-side generated PDFs</a><span class="info-links-desc">How we built selectable-text PDFs in the browser.</span></li>
+          <li><a href="/trust" target="_blank" rel="noopener">Verificar servidor</a><span class="info-links-desc">Compara los assets servidos contra el manifiesto publicado.</span></li>
         </ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Feedback</div>
-        <textarea id="_sd_info-feedback" rows="6" placeholder="Tell us what's working, what's broken, what you'd like to see."></textarea>
+        <div class="info-section-title">Notas de reporte</div>
+        <textarea id="_sd_info-feedback" rows="6" placeholder="Captura feedback del hub o un problema de entrega."></textarea>
         <p id="_sd_info-feedback-warning" class="info-feedback-warning" hidden>
-          That looks like an email address. Feedback is displayed publicly, so remove it if you don't want it shared.
+          Eso parece un correo. Quitalo salvo que la nota necesite una via de contacto.
         </p>
         <div class="info-feedback-actions">
-          <button class="btn" id="_sd_info-feedback-send">Send</button>
+          <button class="btn" id="_sd_info-feedback-send">Enviar</button>
           <span id="_sd_info-feedback-status" class="info-feedback-status" aria-live="polite"></span>
         </div>
         <p class="info-feedback-note">
-          Displayed publicly at <a href="/feedback" target="_blank" rel="noopener">smalldocs.org/feedback</a>.
-          Stored in a small SQLite database on our server. We store the message and a timestamp, nothing else. Don't include personal info.
+          Se guarda en el endpoint de feedback de este servidor con mensaje y timestamp. No incluyas secretos ni credenciales.
         </p>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Links</div>
+        <div class="info-section-title">Enlaces</div>
         <ul class="info-links">
-          <li><a href="/feedback" target="_blank" rel="noopener">Read feedback</a><span class="info-links-desc">What other users have sent in.</span></li>
-          <li><a href="/analytics" target="_blank" rel="noopener">Analytics</a><span class="info-links-desc">Visit counts, cohorts, devices.</span></li>
-          <li><a href="https://smalldocs.org/" target="_blank" rel="noopener">Learn about SmallDocs</a><span class="info-links-desc">How the app works and why.</span></li>
+          <li><a href="/feedback" target="_blank" rel="noopener">Leer notas</a><span class="info-links-desc">Feedback enviado desde este hub.</span></li>
+          <li><a href="/analytics" target="_blank" rel="noopener">Analitica</a><span class="info-links-desc">Conteos anonimos de visitas y cohortes de dispositivo.</span></li>
+          <li><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener">Fork SmallDocs</a><span class="info-links-desc">Fuente del renderer debajo de este hub.</span></li>
         </ul>
       </div>
     </div>
@@ -789,75 +779,20 @@
 <div id="_sd_statusbar">
   <span id="_sd_status-text"></span>
   <span id="_sd_sb-links" style="margin-left:auto; font-size:11.5px; color:var(--text-2); display:flex; align-items:center; gap:6px; flex-wrap:nowrap; justify-content:flex-end; min-width:0">
-    <span class="sb-item" id="sb-private"><a href="https://smalldocs.org/#sec=privacy" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">100% private</a></span>
-    <span class="sb-item" id="sb-trust" data-trust-status>Open source: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verify server</a></span>
-    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">CLI for you &amp; your agents:</span> <span id="_sd_cli-prompt-wrap" style="display:inline-flex; align-items:center; gap:3px; cursor:pointer" title="Copy a prompt that asks your coding agent to install and set up SmallDocs"><code id="_sd_cli-prompt-label" style="background:var(--bg-surface); border:1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius:3px; padding:1px 5px; font-size:11px; color:var(--accent); transition:border-color .15s">Copy install prompt</code><button id="_sd_cli-prompt-btn" style="background:none; border:none; cursor:pointer; color:var(--accent); padding:0; vertical-align:middle; opacity:0.5; transition:opacity .15s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></span><span id="_sd_cli-install-wrap" style="align-items:center; gap:3px; cursor:pointer" title="Click to copy the install command for your system"><code id="_sd_cli-install-cmd" style="background:var(--bg-surface); border:1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius:3px; padding:1px 5px; font-size:11px; color:var(--accent); transition:border-color .15s">curl -fsSL https://smalldocs.org/install | sh</code><button id="_sd_cli-copy-btn" style="background:none; border:none; cursor:pointer; color:var(--accent); padding:0; vertical-align:middle; opacity:0.5; transition:opacity .15s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></span></span>
-    <span class="sb-item" id="sb-discord"><a href="https://discord.gg/txjATTsDaq" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Discord</a></span>
-    <span class="sb-item" id="sb-github"><a href="https://github.com/espressoplease/smalldocs" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">GitHub</a></span>
-    <span class="sb-item" id="sb-business"><a href="/business" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">For business</a></span>
-    <span class="sb-item" id="sb-terms">You agree to our <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Terms</a></span>
+    <span class="sb-item" id="sb-private"><a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Renderer en cliente</a></span>
+    <span class="sb-item" id="sb-trust" data-trust-status>Fork SmallDocs: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verificar servidor</a></span>
+    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">Enlaces:</span> snapshots cifrados, legibles desde Telegram</span>
+    <span class="sb-item" id="sb-discord">Miyagi Reports</span>
+    <span class="sb-item" id="sb-github"><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">GitHub</a></span>
+    <span class="sb-item" id="sb-business"><a href="/" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Hub de reportes</a></span>
+    <span class="sb-item" id="sb-terms">Aceptas nuestros <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">terminos</a></span>
   </span>
 </div>
-<pre id="_sd_cli-prompt-text" style="display:none"></pre>
-<style>
-  #_sd_cli-install-wrap:hover #_sd_cli-copy-btn { opacity: 1 !important; }
-  #_sd_cli-install-wrap:hover #_sd_cli-install-cmd { border-color: var(--accent) !important; }
-  #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-btn { opacity: 1 !important; }
-  #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-label { border-color: var(--accent) !important; }
-</style>
-<script src="/public/sdocs-cli-setup.js"></script>
 <script nonce="__CSP_NONCE__">
 (function () {
-  var COPY_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-  var CHECK_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-  function bindCopy(wrap, btn, getText) {
-    if (!wrap || !btn) return;
-    wrap.addEventListener('click', function () {
-      navigator.clipboard.writeText(getText()).then(function () {
-        btn.innerHTML = CHECK_ICON;
-        setTimeout(function () { btn.innerHTML = COPY_ICON; }, 1500);
-      });
-    });
-  }
-
   // Someone reading a document arrived via a #md= hash, so they are likely
-  // already a SmallDocs user: frame the footer around updating, not installing.
-  // Everyone else (root, /new, blog) gets the install framing. The copied
-  // prompt installs-or-updates either way, so the framing is just labelling.
+  // already using the report renderer: frame the footer around updating.
   var isDocPage = /(^|[#&])md=/.test(location.hash || '');
-
-  // Command chip. On a doc page it offers the canonical update verb; otherwise
-  // the OS-correct install command (curl on macOS / Linux, npm on Windows,
-  // which has no POSIX shell to run the installer).
-  var CLI = window.SDocCliSetup || {};
-  var isWindows = CLI.isWindows ? CLI.isWindows() : false;
-  var installCmd = CLI.installCommand ? CLI.installCommand(isWindows) : "curl -fsSL https://smalldocs.org/install | sh";
-  var cmd = isDocPage ? 'sdoc upgrade' : installCmd;
-  var cmdEl = document.getElementById('_sd_cli-install-cmd');
-  if (cmdEl) cmdEl.textContent = cmd;
-
-  if (isDocPage) {
-    var label = document.getElementById('_sd_cli-prompt-label');
-    if (label) label.textContent = 'Copy update prompt';
-    var pwrap = document.getElementById('_sd_cli-prompt-wrap');
-    if (pwrap) pwrap.title = 'Copy a prompt that asks your coding agent to update SmallDocs and learn its latest features';
-    var iwrap = document.getElementById('_sd_cli-install-wrap');
-    if (iwrap) iwrap.title = 'Click to copy the update command';
-  }
-
-  bindCopy(
-    document.getElementById('_sd_cli-install-wrap'),
-    document.getElementById('_sd_cli-copy-btn'),
-    function () { return cmd; }
-  );
-
-  var promptEl = document.getElementById('_sd_cli-prompt-text');
-  if (promptEl && CLI.SETUP_PROMPT) promptEl.textContent = CLI.SETUP_PROMPT;
-  bindCopy(
-    document.getElementById('_sd_cli-prompt-wrap'),
-    document.getElementById('_sd_cli-prompt-btn'),
-    function () { return promptEl ? promptEl.textContent.trim() : ''; }
-  );
 
   // Footer fit. The bar is one fixed-height line and must never wrap. Its
   // content differs by page - the doc-page "sdoc upgrade" chip is far
@@ -867,7 +802,7 @@
   // order) only when the cluster actually overflows, re-checked on resize
   // and whenever the content changes. Each variant then lasts as long as
   // it physically fits. #sb-private and #sb-terms are never dropped.
-  var FOOTER_DROP_ORDER = ['_sd_cli-install-wrap', 'sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
+  var FOOTER_DROP_ORDER = ['sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
   function fitFooter() {
     var bar = document.getElementById('_sd_statusbar');
     var links = document.getElementById('_sd_sb-links');
@@ -909,10 +844,9 @@
   // Text metrics shift the moment the web font swaps in; re-fit then.
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
 
-  // On a doc page, fold how long ago the newest CLI shipped into the lead-in
-  // itself ("CLI update released 2 hours ago:") - a quiet nudge for anyone
-  // running an older copy. The server caches the npm lookup; if it is
-  // unavailable the lead-in keeps its neutral text rather than a wrong figure.
+  // On a doc page, keep the visible footer about report links. If the server
+  // can resolve the newest CLI build, attach that maintenance note as a title
+  // so it does not corrupt the Report Links label.
   if (isDocPage) {
     var leadEl = document.getElementById('_sd_cli-lead');
     fetch('/cli-latest').then(function (r) {
@@ -922,98 +856,32 @@
       if (!leadEl || !info || !info.time) return;
       var rel = timeAgo(info.time);
       if (!rel) return;
-      leadEl.textContent = 'CLI update released ' + rel + ':';
-      if (info.version) leadEl.title = 'sdoc v' + info.version + ', published ' + new Date(info.time).toLocaleString();
+      leadEl.title = (info.version ? 'sdoc v' + info.version : 'sdoc') +
+        ', publicado ' + new Date(info.time).toLocaleString() + ' (' + rel + ')';
       scheduleFit();
     }).catch(function () { /* keep the neutral lead-in */ });
-  }
-
-  // Light engagement nudge. Once someone has opened a few distinct documents
-  // they are clearly using SmallDocs, so invite them to the community once.
-  // Counting is entirely client-side (localStorage); nothing is sent anywhere.
-  var DISCORD_URL = 'https://discord.gg/txjATTsDaq';
-  var DOC_OPENS_KEY = '_sd_doc_opens';
-  var DISCORD_DISMISS_KEY = '_sd_discord_invite_dismissed';
-  var DISCORD_THRESHOLD = 3;
-
-  if (isDocPage) { try { recordDocOpenAndMaybeInvite(); } catch (_) {} }
-
-  function docFingerprint() {
-    var h = location.hash || '';
-    var m = /[#&]md=([^&]+)/.exec(h);
-    var v = m ? m[1] : h;
-    return v.slice(0, 48);
-  }
-
-  function recordDocOpenAndMaybeInvite() {
-    try { if (localStorage.getItem(DISCORD_DISMISS_KEY) === '1') return; } catch (_) { return; }
-    var fp = docFingerprint();
-    if (!fp) return;
-    var seen = [];
-    try { seen = JSON.parse(localStorage.getItem(DOC_OPENS_KEY) || '[]'); } catch (_) { seen = []; }
-    if (!Array.isArray(seen)) seen = [];
-    if (seen.indexOf(fp) === -1) {
-      seen.push(fp);
-      if (seen.length > 20) seen = seen.slice(-20);
-      try { localStorage.setItem(DOC_OPENS_KEY, JSON.stringify(seen)); } catch (_) {}
-    }
-    if (seen.length >= DISCORD_THRESHOLD) showDiscordBanner();
-  }
-
-  function dismissDiscordBanner() {
-    try { localStorage.setItem(DISCORD_DISMISS_KEY, '1'); } catch (_) {}
-    var el = document.getElementById('_sd_discord-banner');
-    if (el) el.hidden = true;
-  }
-
-  function showDiscordBanner() {
-    var el = document.getElementById('_sd_discord-banner');
-    if (!el) return;
-    if (!el.dataset.rendered) {
-      while (el.firstChild) el.removeChild(el.firstChild);
-      var text = document.createElement('span');
-      text.className = 'sd-discord-banner-text';
-      text.textContent = "Please join our Discord. We'd love to get to know you better & improve SmallDocs based on your feedback.";
-      var join = document.createElement('a');
-      join.className = 'sd-discord-banner-join';
-      join.href = DISCORD_URL;
-      join.target = '_blank';
-      join.rel = 'noopener';
-      join.textContent = 'Join the Discord';
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'sd-discord-banner-dismiss';
-      btn.setAttribute('aria-label', 'Dismiss');
-      btn.textContent = '×'; // multiplication sign
-      btn.addEventListener('click', dismissDiscordBanner);
-      el.appendChild(text);
-      el.appendChild(join);
-      el.appendChild(btn);
-      el.dataset.rendered = '1';
-    }
-    el.hidden = false;
   }
 
   function timeAgo(iso) {
     var then = new Date(iso).getTime();
     if (!then) return '';
     var s = Math.max(0, (Date.now() - then) / 1000);
-    if (s < 60) return 'just now';
+    if (s < 60) return 'ahora';
     var units = [
-      [31536000, 'year'],
-      [2592000, 'month'],
-      [604800, 'week'],
-      [86400, 'day'],
-      [3600, 'hour'],
-      [60, 'minute'],
+      [31536000, 'ano', 'anos'],
+      [2592000, 'mes', 'meses'],
+      [604800, 'semana', 'semanas'],
+      [86400, 'dia', 'dias'],
+      [3600, 'hora', 'horas'],
+      [60, 'minuto', 'minutos'],
     ];
     for (var i = 0; i < units.length; i++) {
       if (s >= units[i][0]) {
         var n = Math.round(s / units[i][0]);
-        return n + ' ' + units[i][1] + (n > 1 ? 's' : '') + ' ago';
+        return 'hace ' + n + ' ' + (n === 1 ? units[i][1] : units[i][2]);
       }
     }
-    return 'just now';
+    return 'ahora';
   }
 })();
 </script>

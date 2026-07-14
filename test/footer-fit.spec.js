@@ -9,24 +9,22 @@ const { test, expect } = require('@playwright/test');
  * The right-hand link cluster (#_sd_sb-links) is `nowrap`, and fitFooter()
  * (in index.html) drops the lowest-priority items only when the line
  * actually overflows - re-measured on resize and whenever the content
- * changes. This is content-aware on purpose: the doc-page footer (short
- * "sdoc upgrade" chip) is far narrower than the homepage footer (long curl
- * command), so a fixed width breakpoint would drop items too early for the
- * narrower variant.
+ * changes. The branded landing page lives at /; the renderer chrome and
+ * report-link status bar live at /docs.
  *
  * This spec pins the invariants that must hold at every width, for both
- * variants:
+ * renderer footer:
  *   - the bar stays one line,
  *   - the visible items fit (their widths + gaps <= available width),
  *   - #sb-private and #sb-terms are never dropped,
  *   - items drop in priority order (the hidden set is a prefix of
  *     FOOTER_DROP_ORDER - you never hide a higher-priority item while a
  *     lower-priority one is still shown).
- * Plus: the CLI block now survives far narrower than the old 999px drop.
+ * Plus: the report-link block survives below the old 999px drop.
  */
 
 // Must match FOOTER_DROP_ORDER in index.html.
-const DROP_ORDER = ['_sd_cli-install-wrap', 'sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
+const DROP_ORDER = ['sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
 const ALWAYS = ['sb-private', 'sb-terms'];
 
 const WIDTHS = [];
@@ -89,8 +87,8 @@ function assertInvariants(m, w) {
   }
 }
 
-test('homepage footer fits and drops in order across the range', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+test('docs footer fits and drops in order across the range', async ({ page }) => {
+  await page.goto('/docs', { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   for (const w of WIDTHS) {
     await page.setViewportSize({ width: w, height: 900 });
@@ -99,15 +97,9 @@ test('homepage footer fits and drops in order across the range', async ({ page }
   }
 });
 
-test('doc-page footer keeps the CLI affordance far longer', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
-  // Reproduce the doc-page content (set live by the footer script on #md= pages).
-  await page.evaluate(() => {
-    document.getElementById('_sd_cli-install-cmd').textContent = 'sdoc upgrade';
-    document.getElementById('_sd_cli-prompt-label').textContent = 'Copy update prompt';
-    document.getElementById('_sd_cli-lead').textContent = 'CLI update released 6 hours ago:';
-    window.dispatchEvent(new Event('resize'));
-  });
+test('doc-page footer keeps the report-link affordance far longer', async ({ page }) => {
+  await page.goto('/docs', { waitUntil: 'networkidle' });
+  await expect(page.locator('#_sd_cli-lead')).toHaveText('Enlaces:');
   await page.waitForTimeout(200);
 
   for (const w of WIDTHS) {
@@ -116,12 +108,12 @@ test('doc-page footer keeps the CLI affordance far longer', async ({ page }) => 
     assertInvariants(await measure(page), w);
   }
 
-  // The whole point of the change: at 860px the CLI block (lead + prompt
+  // The whole point of the change: at 920px the report-links block (lead + prompt
   // chip) is still present - the old fixed breakpoint dropped it at 999px.
-  // (With the 28px bar / 11.5px footer text it now drops around 820px, still
-  // far below the old 999px.)
-  await page.setViewportSize({ width: 860, height: 900 });
+  // (With the localized 28px bar / 11.5px footer text it now drops around
+  // 900px, still below the old 999px.)
+  await page.setViewportSize({ width: 920, height: 900 });
   await page.waitForTimeout(120);
   const m = await measure(page);
-  expect(m.shown['sb-cli'], 'CLI block still shown at 860px on a doc page').toBe(true);
+  expect(m.shown['sb-cli'], 'report links block still shown at 920px on a doc page').toBe(true);
 });

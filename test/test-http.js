@@ -23,6 +23,7 @@ module.exports = function(harness) {
       env: {
         ...process.env,
         PORT: '3099',
+        SDOCS_ENABLE_STATEFUL_APIS: '1',
         ANALYTICS_ENABLED: '1',
         ANALYTICS_DB: testDbPath,
         ANALYTICS_FLUSH_IMMEDIATE: '1',
@@ -56,19 +57,29 @@ module.exports = function(harness) {
       assert.ok(r.headers['content-type'].includes('text/html'));
     });
 
-    await testAsync('GET / serves the marketing landing page', async () => {
+    await testAsync('GET / serves the Miyagi report hub landing page', async () => {
       const r = await get(BASE + '/');
-      assert.ok(r.body.includes('id="install"'),
-        'root should contain the landing install section');
-      assert.ok(r.body.includes('curl -fsSL https://smalldocs.org/install | sh'),
-        'root should show the canonical install command');
+      assert.ok(r.body.includes('Miyagi Reports'),
+        'root should be branded as Miyagi Reports');
+      assert.ok(r.body.includes('Hub de reportes PMO'),
+        'root should describe the PMO report hub');
+      assert.ok(r.body.includes('PMO semanal'),
+        'root should include the weekly report card');
+      assert.ok(r.body.includes('Historia standup'),
+        'root should include the daily standup card');
+      assert.ok(r.body.includes('Hoja de metricas'),
+        'root should include the metrics sheet card');
+      assert.ok(r.body.includes('/docs#md='),
+        'root should explain the hash-link report model');
+      assert.ok(r.body.includes('Elastic License 2.0'),
+        'root should keep license access visible');
     });
 
     await testAsync('GET /docs serves the app shell rendering sdoc.md', async () => {
       const r = await get(BASE + '/docs');
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('SDocs'));
+      assert.ok(r.body.includes('Miyagi Reports'));
       assert.ok(r.body.includes('/public/sdoc.md'),
         '/docs should default to sdoc.md');
     });
@@ -77,7 +88,7 @@ module.exports = function(harness) {
       const r = await get(BASE + '/new');
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('SDocs'));
+      assert.ok(r.body.includes('Miyagi Reports'));
     });
 
     await testAsync('GET /nonexistent returns 404', async () => {
@@ -330,7 +341,7 @@ module.exports = function(harness) {
       const r = await get(BASE + '/s/' + createdId);
       assert.strictEqual(r.status, 200);
       assert.ok(r.headers['content-type'].includes('text/html'));
-      assert.ok(r.body.includes('sdocs-app.js'), 'should serve the SDocs index');
+      assert.ok(r.body.includes('sdocs-app.js'), 'should serve the Miyagi Reports index');
     });
 
     // ── Asset cache-busting ──────────────────────────

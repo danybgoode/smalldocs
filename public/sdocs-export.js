@@ -175,7 +175,7 @@ function buildExportHTML(mermaidImages) {
   var fontLink = S.GOOGLE_FONTS.includes(fontName)
     ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName) + ':wght@400;500;600;700&display=swap">'
     : '';
-  var title = (S.currentMeta.title || 'Document').replace(/</g,'&lt;');
+  var title = ((S.currentMeta && S.currentMeta.title) || 'Reporte Miyagi').replace(/</g,'&lt;');
   var clone = S.renderedEl.cloneNode(true);
   inlineCharts(clone);
   inlineMermaid(clone, mermaidImages);
@@ -225,10 +225,10 @@ function loadPdfLib() {
       var s2 = document.createElement('script');
       s2.src = 'https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js';
       s2.onload = function() { pdfLibLoaded = true; resolve(); };
-      s2.onerror = function() { reject(new Error('Could not load fontkit')); };
+      s2.onerror = function() { reject(new Error('No se pudo cargar fontkit')); };
       document.head.appendChild(s2);
     };
-    s1.onerror = function() { reject(new Error('Could not load pdf-lib')); };
+    s1.onerror = function() { reject(new Error('No se pudo cargar pdf-lib')); };
     document.head.appendChild(s1);
   });
 }
@@ -247,7 +247,7 @@ function loadPptxGen() {
         var s = document.createElement('script');
         s.src = src;
         s.onload = function () { res(); };
-        s.onerror = function () { rej(new Error('Could not load ' + src)); };
+        s.onerror = function () { rej(new Error('No se pudo cargar ' + src)); };
         document.head.appendChild(s);
       });
     }
@@ -1405,7 +1405,7 @@ async function renderPdf(rendered, st, chartImages, mermaidImages, mathImages) {
 // ── Export orchestration ──
 
 async function exportPDF() {
-  S.setStatus('Generating PDF\u2026');
+  S.setStatus('Generando PDF...');
   try {
     await loadPdfLib();
     // Ensure any KaTeX-rendered math has settled before capturing the DOM.
@@ -1426,18 +1426,19 @@ async function exportPDF() {
     var blob = new Blob([result.bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'document').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     if (result.dropped > 0) {
-      S.setStatus('PDF downloaded - ' + result.dropped + ' character' +
-                  (result.dropped === 1 ? '' : 's') +
-                  ' omitted (no available font supports them)');
+      S.setStatus('PDF descargado - ' + result.dropped + ' caracter' +
+                  (result.dropped === 1 ? '' : 'es') +
+                  ' omitido' + (result.dropped === 1 ? '' : 's') +
+                  ' (ninguna fuente disponible lo soporta)');
     } else {
-      S.setStatus('PDF downloaded');
+      S.setStatus('PDF descargado');
     }
   } catch (e) {
-    S.setStatus('PDF export failed: ' + e.message);
+    S.setStatus('Fallo la exportacion PDF: ' + e.message);
     console.error(e);
   }
 }
@@ -1455,13 +1456,13 @@ function loadHtmlToDocx() {
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@turbodocx/html-to-docx@1/dist/html-to-docx.browser.js';
     s.onload = function() { htmlToDocxLoaded = true; resolve(); };
-    s.onerror = function() { reject(new Error('Could not load html-to-docx')); };
+    s.onerror = function() { reject(new Error('No se pudo cargar html-to-docx')); };
     document.head.appendChild(s);
   });
 }
 
 async function exportWord() {
-  S.setStatus('Generating Word document\u2026');
+  S.setStatus('Generando documento Word...');
   try {
     await loadHtmlToDocx();
     var closed = expandAllSections();
@@ -1475,12 +1476,12 @@ async function exportWord() {
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (S.currentMeta.title || 'document').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
     a.click();
     URL.revokeObjectURL(a.href);
-    S.setStatus('Exported Word .docx');
+    S.setStatus('Word .docx exportado');
   } catch (e) {
-    S.setStatus('Word export failed: ' + e.message);
+    S.setStatus('Fallo la exportacion Word: ' + e.message);
     console.error(e);
   }
 }
@@ -1505,14 +1506,14 @@ function download(filename, content) {
 async function exportSlidesPdf() {
   var sources = document.querySelectorAll('.sdoc-slide[data-dsl]');
   if (!sources.length) {
-    S.setStatus('No slides in this document');
+    S.setStatus('Este documento no tiene slides');
     return;
   }
   if (!window.SDocSlidePdf) {
-    S.setStatus('Slide PDF renderer not loaded');
+    S.setStatus('Renderer de PDF para slides no cargado');
     return;
   }
-  S.setStatus('Generating slide PDF\u2026');
+  S.setStatus('Generando PDF de slides...');
   try {
     await loadPdfLib();
     var PDFDocument = PDFLib.PDFDocument;
@@ -1525,7 +1526,7 @@ async function exportSlidesPdf() {
     var dropCounter = { count: 0 };
 
     for (var i = 0; i < sources.length; i++) {
-      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '\u2026');
+      if (sources.length > 1) S.setStatus('Renderizando slide ' + (i + 1) + '/' + sources.length + '...');
       var dsl = sources[i].getAttribute('data-dsl');
       // Size each page to its own slide's grid aspect. A fixed 1280x720
       // page distorts any deck that isn't 16:9 (e.g. grid 4 3).
@@ -1546,12 +1547,12 @@ async function exportSlidesPdf() {
     var blob = new Blob([bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = ((S.currentMeta && S.currentMeta.title) || 'slides').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
-    S.setStatus('Slides PDF downloaded');
+    S.setStatus('PDF de slides descargado');
   } catch (e) {
-    S.setStatus('Slide PDF export failed: ' + e.message);
+    S.setStatus('Fallo la exportacion de PDF de slides: ' + e.message);
     console.error(e);
   }
 }
@@ -1563,14 +1564,14 @@ S.exportSlidesPdf = exportSlidesPdf;
 async function exportSlidesPptx() {
   var sources = document.querySelectorAll('.sdoc-slide[data-dsl]');
   if (!sources.length) {
-    S.setStatus('No slides in this document');
+    S.setStatus('Este documento no tiene slides');
     return;
   }
   if (!window.SDocSlidePptx) {
-    S.setStatus('Slide PPTX renderer not loaded');
+    S.setStatus('Renderer de PPTX para slides no cargado');
     return;
   }
-  S.setStatus('Generating PowerPoint…');
+  S.setStatus('Generando PowerPoint...');
   try {
     await loadPptxGen();
     var pres = new window.PptxGenJS();
@@ -1593,7 +1594,7 @@ async function exportSlidesPptx() {
 
     var totalWarnings = 0;
     for (var i = 0; i < sources.length; i++) {
-      if (sources.length > 1) S.setStatus('Rendering slide ' + (i + 1) + '/' + sources.length + '…');
+      if (sources.length > 1) S.setStatus('Renderizando slide ' + (i + 1) + '/' + sources.length + '...');
       var dsl = sources[i].getAttribute('data-dsl');
       var slide = pres.addSlide();
       var res = await window.SDocSlidePptx.drawSlide({
@@ -1603,7 +1604,7 @@ async function exportSlidesPptx() {
       if (res && res.warnings) totalWarnings += res.warnings;
     }
 
-    var name = ((S.currentMeta && S.currentMeta.title) || 'slides').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
+    var name = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
     var blob = await pres.write({ outputType: 'blob' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -1611,12 +1612,12 @@ async function exportSlidesPptx() {
     a.click();
     URL.revokeObjectURL(a.href);
     if (totalWarnings > 0) {
-      S.setStatus('PowerPoint downloaded with ' + totalWarnings + ' warning' + (totalWarnings === 1 ? '' : 's') + ' (see console)');
+      S.setStatus('PowerPoint descargado con ' + totalWarnings + ' advertencia' + (totalWarnings === 1 ? '' : 's') + ' (ver consola)');
     } else {
-      S.setStatus('PowerPoint downloaded');
+      S.setStatus('PowerPoint descargado');
     }
   } catch (e) {
-    S.setStatus('PowerPoint export failed: ' + e.message);
+    S.setStatus('Fallo la exportacion PowerPoint: ' + e.message);
     console.error(e);
   }
 }
@@ -1632,15 +1633,15 @@ var pptxBtn = document.getElementById('_sd_exp-slides-pptx');
 if (pptxBtn) pptxBtn.addEventListener('click', exportSlidesPptx);
 
 document.getElementById('_sd_exp-raw').addEventListener('click', function() {
-  download('document.md', S.currentBody);
-  S.setStatus('Exported raw .md');
+  download('reporte-miyagi.md', S.currentBody);
+  S.setStatus('.md sin estilos exportado');
 });
 
 document.getElementById('_sd_exp-styled').addEventListener('click', function() {
   var meta = Object.assign({}, S.currentMeta, { styles: S.collectStyles() });
   var fm = SDocYaml.serializeFrontMatter(meta);
-  download('document.md', fm + '\n' + S.currentBody);
-  S.setStatus('Exported styled .md with YAML front matter');
+  download('reporte-miyagi.md', fm + '\n' + S.currentBody);
+  S.setStatus('.md con estilos y front matter YAML exportado');
 });
 
 // ── Save as default styles ──────────────────────────────
@@ -1695,11 +1696,11 @@ document.getElementById('_sd_btn-copy-default').addEventListener('click', async 
   try {
     await navigator.clipboard.writeText(saveDefaultCmd);
     var msg = document.getElementById('_sd_save-default-msg');
-    msg.textContent = 'Copied! Paste in your terminal to save defaults.';
+    msg.textContent = 'Copiado. Pegalo en tu terminal para guardar valores iniciales.';
     msg.style.display = 'block';
     setTimeout(function() { msg.style.display = 'none'; }, 4000);
   } catch (e) {
-    S.setStatus('Could not copy to clipboard');
+    S.setStatus('No se pudo copiar al portapapeles');
   }
 });
 

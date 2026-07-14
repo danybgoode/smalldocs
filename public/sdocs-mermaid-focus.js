@@ -350,7 +350,7 @@
     modal.className = 'sdoc-mermaid-focus';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'Diagram fullscreen view');
+    modal.setAttribute('aria-label', 'Vista de diagrama en pantalla completa');
 
     // Pull the bg/fg colours from the source wrapper (computed style) so the
     // modal feels like a magnified version of the block. Falls back to
@@ -390,10 +390,10 @@
     /* of the scroll rather than crowding the brand.                 */
     topbar.innerHTML =
       '<span class="sdoc-mermaid-focus-brand">'
-      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-full">SmallDocs</span>'
-      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-short">SDocs</span>'
-      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-tiny">SD</span>'
-      +   '<span class="sdoc-mermaid-focus-brand-suf">Diagram</span>'
+      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-full">Miyagi Reports</span>'
+      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-short">Reportes</span>'
+      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-tiny">MR</span>'
+      +   '<span class="sdoc-mermaid-focus-brand-suf">Diagrama</span>'
       + '</span>'
       + '<div class="sdoc-mermaid-focus-actions">'
       +   '<button type="button" class="sdoc-mermaid-focus-btn" data-act="zoomin" title="Zoom in (+)" aria-label="Zoom in">' + ZOOM_IN_ICON_SVG + '</button>'
