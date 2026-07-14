@@ -23,6 +23,7 @@ module.exports = function(harness) {
       env: {
         ...process.env,
         PORT: '3099',
+        SDOCS_ENABLE_STATEFUL_APIS: '1',
         ANALYTICS_ENABLED: '1',
         ANALYTICS_DB: testDbPath,
         ANALYTICS_FLUSH_IMMEDIATE: '1',
@@ -56,12 +57,22 @@ module.exports = function(harness) {
       assert.ok(r.headers['content-type'].includes('text/html'));
     });
 
-    await testAsync('GET / serves the marketing landing page', async () => {
+    await testAsync('GET / serves the Miyagi report hub landing page', async () => {
       const r = await get(BASE + '/');
-      assert.ok(r.body.includes('id="install"'),
-        'root should contain the landing install section');
-      assert.ok(r.body.includes('curl -fsSL https://smalldocs.org/install | sh'),
-        'root should show the canonical install command');
+      assert.ok(r.body.includes('Miyagi Reports'),
+        'root should be branded as Miyagi Reports');
+      assert.ok(r.body.includes('PMO Report Hub'),
+        'root should describe the PMO Report Hub');
+      assert.ok(r.body.includes('Weekly PMO'),
+        'root should include the weekly report card');
+      assert.ok(r.body.includes('Standup story'),
+        'root should include the daily standup card');
+      assert.ok(r.body.includes('Metrics sheet'),
+        'root should include the metrics sheet card');
+      assert.ok(r.body.includes('/docs#md='),
+        'root should explain the hash-link report model');
+      assert.ok(r.body.includes('Elastic License 2.0'),
+        'root should keep license access visible');
     });
 
     await testAsync('GET /docs serves the app shell rendering sdoc.md', async () => {
