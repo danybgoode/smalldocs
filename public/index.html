@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Miyagi Reports</title>
-<meta name="description" content="Internal PMO report hub for weekly recaps, monthly packets, and mobile-ready operational briefings." />
+<meta name="description" content="Hub interno PMO para recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil." />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Miyagi Reports" />
-<meta property="og:title" content="Miyagi Reports - PMO report hub" />
-<meta property="og:description" content="Weekly recaps, monthly packets, and mobile-ready operational briefings for Miyagi Sanchez." />
+<meta property="og:title" content="Miyagi Reports - Hub de reportes PMO" />
+<meta property="og:description" content="Recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil para Miyagi Sanchez." />
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Miyagi Reports - PMO report hub" />
-<meta name="twitter:description" content="Weekly recaps, monthly packets, and mobile-ready operational briefings for Miyagi Sanchez." />
+<meta name="twitter:title" content="Miyagi Reports - Hub de reportes PMO" />
+<meta name="twitter:description" content="Recapitulaciones semanales, paquetes mensuales y briefings operativos listos para movil para Miyagi Sanchez." />
 
 <meta name="sdocs-default-md" content="__DEFAULT_MD_PATH__">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%230d2f2b'/%3E%3Cpath d='M8 22V10h3l5 7 5-7h3v12h-3v-7l-4 5h-2l-4-5v7H8Z' fill='%23f2ff5c'/%3E%3C/svg%3E">
@@ -44,9 +44,9 @@
   <!-- ── Left panel ── -->
   <div id="_sd_left">
     <div id="_sd_left-toolbar">
-      <a id="_sd_toolbar-brand" href="#" title="Miyagi Reports - reset to defaults">
+      <a id="_sd_toolbar-brand" href="#" title="Miyagi Reports - volver a valores iniciales">
         <span class="toolbar-brand-text toolbar-brand-full">Miyagi Reports</span>
-        <span class="toolbar-brand-text toolbar-brand-short">Reports</span>
+        <span class="toolbar-brand-text toolbar-brand-short">Reportes</span>
         <span class="toolbar-brand-text toolbar-brand-tiny">MR</span>
       </a>
       <div class="toggle-group">
@@ -94,9 +94,9 @@
           <span class="info-dot" aria-hidden="true"></span>
         </button>
       </div>
-      <a id="_sd_btn-library" href="/library" data-tip="Browse report markdown files">
+      <a id="_sd_btn-library" href="/library" data-tip="Explorar archivos Markdown de reportes">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-        <span class="library-btn-label">Report Library</span>
+        <span class="library-btn-label">Biblioteca de reportes</span>
       </a>
     </div>
     <div id="_sd_write-toolbar">
@@ -166,7 +166,7 @@
     <div id="_sd_content-area" tabindex="0">
       <div id="_sd_sdocs-file-info" hidden>
         <div class="fic-rows"></div>
-        <span class="fic-privacy-note" hidden>Local only rows are not included in shared reports</span>
+        <span class="fic-privacy-note" hidden>Las filas solo locales no se incluyen en reportes compartidos</span>
       </div>
       <div id="_sd_rendered"></div>
       <div id="_sd_write" contenteditable="true" spellcheck="true"></div>
@@ -724,49 +724,49 @@
     <div id="_sd_info-panel-header">Info</div>
     <div id="_sd_info-panel-body">
       <div class="info-section">
-        <div class="info-section-title">Report hub</div>
-        <p class="info-section-text">Daily, weekly, and monthly operational reports are rendered here for review and Telegram delivery.</p>
+        <div class="info-section-title">Hub de reportes</div>
+        <p class="info-section-text">Los reportes operativos diarios, semanales y mensuales se renderizan aqui para revision y entrega por Telegram.</p>
       </div>
       <div class="info-settings">
         <div class="info-settings-row">
-          <span class="info-settings-label">Notify me about report hub notes</span>
-          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Notify me about report hub notes">
-            <button class="btn" id="_sd_info-notify-on" role="radio" aria-checked="true">On</button>
-            <button class="btn" id="_sd_info-notify-off" role="radio" aria-checked="false">Off</button>
+          <span class="info-settings-label">Avisarme sobre notas del hub</span>
+          <div class="toggle-group info-settings-toggle" role="radiogroup" aria-label="Avisarme sobre notas del hub">
+            <button class="btn" id="_sd_info-notify-on" role="radio" aria-checked="true">Si</button>
+            <button class="btn" id="_sd_info-notify-off" role="radio" aria-checked="false">No</button>
           </div>
         </div>
-        <p class="info-settings-help">When off, the info icon will not show a dot for unseen notes. Open this panel any time to check.</p>
+        <p class="info-settings-help">Cuando este apagado, el icono de info no mostrara punto por notas no vistas. Puedes abrir este panel cuando quieras.</p>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Hub notes</div>
+        <div class="info-section-title">Notas del hub</div>
         <ul id="_sd_info-features" class="info-feature-list"></ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Process</div>
+        <div class="info-section-title">Proceso</div>
         <ul class="info-links">
-          <li><a href="/trust" target="_blank" rel="noopener">Verify server</a><span class="info-links-desc">Compare served assets with the published manifest.</span></li>
+          <li><a href="/trust" target="_blank" rel="noopener">Verificar servidor</a><span class="info-links-desc">Compara los assets servidos contra el manifiesto publicado.</span></li>
         </ul>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Report notes</div>
-        <textarea id="_sd_info-feedback" rows="6" placeholder="Capture report hub feedback or a delivery issue."></textarea>
+        <div class="info-section-title">Notas de reporte</div>
+        <textarea id="_sd_info-feedback" rows="6" placeholder="Captura feedback del hub o un problema de entrega."></textarea>
         <p id="_sd_info-feedback-warning" class="info-feedback-warning" hidden>
-          That looks like an email address. Remove it unless the note needs a contact path.
+          Eso parece un correo. Quitalo salvo que la nota necesite una via de contacto.
         </p>
         <div class="info-feedback-actions">
-          <button class="btn" id="_sd_info-feedback-send">Send</button>
+          <button class="btn" id="_sd_info-feedback-send">Enviar</button>
           <span id="_sd_info-feedback-status" class="info-feedback-status" aria-live="polite"></span>
         </div>
         <p class="info-feedback-note">
-          Stored in this server's feedback endpoint with the message and timestamp. Do not include secrets or credentials.
+          Se guarda en el endpoint de feedback de este servidor con mensaje y timestamp. No incluyas secretos ni credenciales.
         </p>
       </div>
       <div class="info-section">
-        <div class="info-section-title">Links</div>
+        <div class="info-section-title">Enlaces</div>
         <ul class="info-links">
-          <li><a href="/feedback" target="_blank" rel="noopener">Read notes</a><span class="info-links-desc">Feedback submitted through this hub.</span></li>
-          <li><a href="/analytics" target="_blank" rel="noopener">Analytics</a><span class="info-links-desc">Anonymous visit counts and device cohorts.</span></li>
-          <li><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener">SmallDocs fork</a><span class="info-links-desc">Source for the renderer underneath this hub.</span></li>
+          <li><a href="/feedback" target="_blank" rel="noopener">Leer notas</a><span class="info-links-desc">Feedback enviado desde este hub.</span></li>
+          <li><a href="/analytics" target="_blank" rel="noopener">Analitica</a><span class="info-links-desc">Conteos anonimos de visitas y cohortes de dispositivo.</span></li>
+          <li><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener">Fork SmallDocs</a><span class="info-links-desc">Fuente del renderer debajo de este hub.</span></li>
         </ul>
       </div>
     </div>
@@ -780,13 +780,13 @@
 <div id="_sd_statusbar">
   <span id="_sd_status-text"></span>
   <span id="_sd_sb-links" style="margin-left:auto; font-size:11.5px; color:var(--text-2); display:flex; align-items:center; gap:6px; flex-wrap:nowrap; justify-content:flex-end; min-width:0">
-    <span class="sb-item" id="sb-private"><a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Client-side renderer</a></span>
-    <span class="sb-item" id="sb-trust" data-trust-status>SmallDocs fork: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verify server</a></span>
-    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">Report links:</span> encrypted snapshots, readable from Telegram</span>
+    <span class="sb-item" id="sb-private"><a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Renderer en cliente</a></span>
+    <span class="sb-item" id="sb-trust" data-trust-status>Fork SmallDocs: <a href="/trust" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">verificar servidor</a></span>
+    <span class="sb-item" id="sb-cli"><span id="_sd_cli-lead">Enlaces:</span> snapshots cifrados, legibles desde Telegram</span>
     <span class="sb-item" id="sb-discord">Miyagi Reports</span>
     <span class="sb-item" id="sb-github"><a href="https://github.com/danybgoode/smalldocs" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">GitHub</a></span>
-    <span class="sb-item" id="sb-business"><a href="/" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Report hub</a></span>
-    <span class="sb-item" id="sb-terms">You agree to our <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Terms</a></span>
+    <span class="sb-item" id="sb-business"><a href="/" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">Hub de reportes</a></span>
+    <span class="sb-item" id="sb-terms">Aceptas nuestros <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">terminos</a></span>
   </span>
 </div>
 <pre id="_sd_cli-prompt-text" style="display:none"></pre>
@@ -828,9 +828,9 @@
 
   if (isDocPage) {
     var label = document.getElementById('_sd_cli-prompt-label');
-    if (label) label.textContent = 'Copy update prompt';
+    if (label) label.textContent = 'Copiar prompt de actualizacion';
     var pwrap = document.getElementById('_sd_cli-prompt-wrap');
-    if (pwrap) pwrap.title = 'Copy a prompt that asks your coding agent to update the report renderer and learn its latest features';
+    if (pwrap) pwrap.title = 'Copia un prompt para pedir al agente que actualice el renderer y aprenda sus funciones recientes';
     var iwrap = document.getElementById('_sd_cli-install-wrap');
     if (iwrap) iwrap.title = 'Click to copy the update command';
   }
@@ -857,7 +857,7 @@
   // order) only when the cluster actually overflows, re-checked on resize
   // and whenever the content changes. Each variant then lasts as long as
   // it physically fits. #sb-private and #sb-terms are never dropped.
-  var FOOTER_DROP_ORDER = ['_sd_cli-install-wrap', 'sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
+  var FOOTER_DROP_ORDER = ['sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
   function fitFooter() {
     var bar = document.getElementById('_sd_statusbar');
     var links = document.getElementById('_sd_sb-links');
@@ -963,17 +963,17 @@
       while (el.firstChild) el.removeChild(el.firstChild);
       var text = document.createElement('span');
       text.className = 'sd-discord-banner-text';
-      text.textContent = "Report hub feedback belongs in the existing PMO operations thread.";
+      text.textContent = "El feedback del hub pertenece al hilo operativo PMO existente.";
       var join = document.createElement('a');
       join.className = 'sd-discord-banner-join';
       join.href = DISCORD_URL;
       join.target = '_blank';
       join.rel = 'noopener';
-      join.textContent = 'Open report hub';
+      join.textContent = 'Abrir hub';
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'sd-discord-banner-dismiss';
-      btn.setAttribute('aria-label', 'Dismiss');
+      btn.setAttribute('aria-label', 'Cerrar');
       btn.textContent = '×'; // multiplication sign
       btn.addEventListener('click', dismissDiscordBanner);
       el.appendChild(text);

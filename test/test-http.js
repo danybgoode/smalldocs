@@ -61,13 +61,13 @@ module.exports = function(harness) {
       const r = await get(BASE + '/');
       assert.ok(r.body.includes('Miyagi Reports'),
         'root should be branded as Miyagi Reports');
-      assert.ok(r.body.includes('PMO Report Hub'),
-        'root should describe the PMO Report Hub');
-      assert.ok(r.body.includes('Weekly PMO'),
+      assert.ok(r.body.includes('Hub de reportes PMO'),
+        'root should describe the PMO report hub');
+      assert.ok(r.body.includes('PMO semanal'),
         'root should include the weekly report card');
-      assert.ok(r.body.includes('Standup story'),
+      assert.ok(r.body.includes('Historia standup'),
         'root should include the daily standup card');
-      assert.ok(r.body.includes('Metrics sheet'),
+      assert.ok(r.body.includes('Hoja de metricas'),
         'root should include the metrics sheet card');
       assert.ok(r.body.includes('/docs#md='),
         'root should explain the hash-link report model');

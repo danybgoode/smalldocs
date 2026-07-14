@@ -8,32 +8,32 @@ tags:
 
 # Miyagi Reports
 
-This hub renders PMO operational reports produced by the Miyagi Sanchez routines. It is the review surface for report packets before and after they are routed to Telegram.
+Este hub renderiza reportes operativos PMO producidos por las rutinas de Miyagi Sanchez. Es la superficie de revision para paquetes de reporte antes y despues de enviarlos por Telegram.
 
-Use it for:
+Usalo para:
 
-- Daily standup story decks.
-- Weekly PMO recaps.
-- Monthly operational packets.
-- Report source that mixes prose, charts, diagrams, slides, and cells.
+- Decks tipo historia del standup diario.
+- Recapitulaciones PMO semanales.
+- Paquetes operativos mensuales.
+- Fuentes de reporte que mezclan prosa, graficas, diagramas, slides y celdas.
 
-## How report links work
+## Como funcionan los enlaces
 
-Most packets travel as `/docs#md=...` links. The report content sits in the URL fragment, which browsers do not send to the server when the page loads. The server serves the viewer assets; the browser renders the packet.
+La mayoria de los paquetes viajan como enlaces `/docs#md=...`. El contenido del reporte vive en el fragmento de URL, que los navegadores no envian al servidor al cargar la pagina. El servidor entrega los assets del visor; el navegador renderiza el paquete.
 
-When a short link is generated, the server stores encrypted ciphertext. The decryption key stays in the URL the reviewer receives. Use short links for Telegram delivery and mobile review, not as a long-term archive.
+Cuando se genera un enlace corto, el servidor guarda ciphertext cifrado. La llave de descifrado se queda en la URL que recibe quien revisa. Usa enlaces cortos para entrega por Telegram y revision movil, no como archivo de largo plazo.
 
-## Report packet checklist
+## Checklist del paquete
 
-- Title names the routine and reporting window.
-- Executive summary fits on a phone screen.
-- Links are short enough for Telegram previews.
-- Slides use landscape, story-friendly framing.
-- Any cells block has the values a reviewer needs to inspect.
-- The packet says what needs attention, what changed, and what is next.
+- El titulo nombra la rutina y la ventana de reporte.
+- El resumen ejecutivo cabe en una pantalla de celular.
+- Los enlaces son suficientemente cortos para previews de Telegram.
+- Los slides usan formato horizontal, amigable para stories.
+- Cada bloque de celdas trae los valores que la persona revisora necesita inspeccionar.
+- El paquete dice que necesita atencion, que cambio y que sigue.
 
-## Built on SmallDocs
+## Construido sobre SmallDocs
 
-Miyagi Reports is our branded fork of SmallDocs. The underlying renderer keeps the SmallDocs mechanics: Markdown input, browser-side rendering, export to PDF or PowerPoint for slides, and optional encrypted short links.
+Miyagi Reports es nuestro fork con marca de SmallDocs. El renderer conserva la mecanica de SmallDocs: entrada Markdown, render del lado del navegador, exportacion a PDF o PowerPoint para slides, y enlaces cortos cifrados opcionales.
 
-Open `/trust` to verify the served assets against the published manifest. Open `/legal` for license and terms.
+Abre `/trust` para verificar los assets servidos contra el manifiesto publicado. Abre `/legal` para licencia y terminos.

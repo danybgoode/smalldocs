@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 <meta charset="utf-8">
 <script>
@@ -7,59 +7,59 @@ if (location.hash && location.hash.indexOf('=') !== -1)
   location.replace('/docs' + location.hash);
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Miyagi Reports - PMO Report Hub</title>
-<meta name="description" content="Miyagi PMO report hub for weekly decks, daily standup stories, monthly packets, metrics sheets, and trust checks.">
+<title>Miyagi Reports - Hub de reportes PMO</title>
+<meta name="description" content="Hub PMO de Miyagi para decks semanales, historias standup diarias, paquetes mensuales, hojas de metricas y verificaciones de confianza.">
 <link rel="canonical" href="https://pmo-smalldocs-oehqqtyoia-uk.a.run.app/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Miyagi Reports">
-<meta property="og:title" content="Miyagi Reports - PMO Report Hub">
-<meta property="og:description" content="Operational reports, story decks, packets, and trust checks for the Miyagi PMO rail.">
+<meta property="og:title" content="Miyagi Reports - Hub de reportes PMO">
+<meta property="og:description" content="Reportes operativos, decks tipo historia, paquetes y verificaciones de confianza para el riel PMO de Miyagi.">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Miyagi Reports - PMO Report Hub">
-<meta name="twitter:description" content="Operational reports, story decks, packets, and trust checks for the Miyagi PMO rail.">
+<meta name="twitter:title" content="Miyagi Reports - Hub de reportes PMO">
+<meta name="twitter:description" content="Reportes operativos, decks tipo historia, paquetes y verificaciones de confianza para el riel PMO de Miyagi.">
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%230d2f2b'/%3E%3Cpath d='M8 22V10h3l5 7 5-7h3v12h-3v-7l-4 5h-2l-4-5v7H8Z' fill='%23f2ff5c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/public/report-hub.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="/" aria-label="Miyagi Reports home">
+  <a class="brand" href="/" aria-label="Inicio de Miyagi Reports">
     <span class="brand-mark" aria-hidden="true"></span>
     <span>Miyagi Reports</span>
   </a>
-  <nav class="topnav" aria-label="Report hub">
-    <a href="/docs">Docs</a>
-    <a href="/trust">Trust</a>
-    <a href="https://github.com/danybgoode/smalldocs/blob/main/LICENSE" rel="noopener" target="_blank">License</a>
+  <nav class="topnav" aria-label="Hub de reportes">
+    <a href="/docs">Visor</a>
+    <a href="/trust">Confianza</a>
+    <a href="https://github.com/danybgoode/smalldocs/blob/main/LICENSE" rel="noopener" target="_blank">Licencia</a>
   </nav>
 </header>
 
 <main>
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">PMO operational reports</p>
-      <h1>The report hub for Miyagi operating rhythm.</h1>
+      <p class="eyebrow">Reportes operativos PMO</p>
+      <h1>El hub de reportes para el ritmo operativo Miyagi.</h1>
       <p class="lead">
-        Weekly PMO decks, daily standup stories, monthly packets, and metrics sheets open here.
-        Report content travels in URL-hash links today, so forwarded reports render without a login
-        and without storing the document on this server.
+        Decks PMO semanales, historias standup diarias, paquetes mensuales y hojas de metricas
+        se abren aqui. Hoy el contenido viaja en enlaces con hash de URL, para que los reportes
+        reenviados se rendericen sin login y sin guardar el documento en este servidor.
       </p>
       <div class="hero-actions">
-        <a class="primary-action" href="/docs">Open report viewer</a>
-        <a class="secondary-action" href="/trust">Verify trust surface</a>
+        <a class="primary-action" href="/docs">Abrir visor de reportes</a>
+        <a class="secondary-action" href="/trust">Verificar confianza</a>
       </div>
     </div>
 
-    <div class="report-preview" aria-label="PMO report preview">
+    <div class="report-preview" aria-label="Vista previa de reporte PMO">
       <div class="preview-head">
-        <span>Weekly PMO</span>
+        <span>PMO semanal</span>
         <strong>W29</strong>
       </div>
       <div class="preview-metric">
-        <span>Delivery signal</span>
-        <strong>On track</strong>
+        <span>Senal de entrega</span>
+        <strong>En ruta</strong>
       </div>
       <div class="preview-grid">
         <span style="--h:72%"></span>
@@ -70,63 +70,63 @@ if (location.hash && location.hash.indexOf('=') !== -1)
       </div>
       <div class="preview-note">
         <span></span>
-        <p>Story deck, sheet, and packet links ride the Telegram routine rail.</p>
+        <p>Decks, hojas y paquetes viajan por el riel de rutinas en Telegram.</p>
       </div>
     </div>
   </section>
 
-  <section class="cards" aria-label="Report entry points">
+  <section class="cards" aria-label="Entradas de reportes">
     <a class="report-card card-weekly" href="/docs">
-      <span class="card-kicker">Weekly</span>
-      <strong>PMO deck</strong>
-      <p>Headline delivery, scrum, and DORA signals for the week.</p>
+      <span class="card-kicker">Semanal</span>
+      <strong>Deck PMO</strong>
+      <p>Entrega, scrum y senales DORA principales de la semana.</p>
     </a>
     <a class="report-card card-standup" href="/docs">
-      <span class="card-kicker">Daily</span>
-      <strong>Standup story</strong>
-      <p>Mobile-first story deck generated from the standup routine.</p>
+      <span class="card-kicker">Diario</span>
+      <strong>Historia standup</strong>
+      <p>Deck movil generado desde la rutina de standup.</p>
     </a>
     <a class="report-card card-monthly" href="/docs">
-      <span class="card-kicker">Monthly</span>
-      <strong>Packet</strong>
-      <p>On-demand narrative packet for stakeholder review.</p>
+      <span class="card-kicker">Mensual</span>
+      <strong>Paquete</strong>
+      <p>Paquete narrativo bajo demanda para revision ejecutiva.</p>
     </a>
     <a class="report-card card-sheet" href="/docs">
-      <span class="card-kicker">Workbook</span>
-      <strong>Metrics sheet</strong>
-      <p>Formula-backed cells exportable as Excel.</p>
+      <span class="card-kicker">Libro</span>
+      <strong>Hoja de metricas</strong>
+      <p>Celdas con formulas listas para exportar a Excel.</p>
     </a>
     <a class="report-card card-trust" href="/trust">
-      <span class="card-kicker">Trust</span>
-      <strong>Server check</strong>
-      <p>Inspect the running commit and public-file manifest.</p>
+      <span class="card-kicker">Confianza</span>
+      <strong>Revision del servidor</strong>
+      <p>Inspecciona el commit activo y el manifiesto publico.</p>
     </a>
   </section>
 
-  <section class="operating-note" aria-label="How report links work">
+  <section class="operating-note" aria-label="Como funcionan los enlaces de reporte">
     <div>
-      <h2>Current link model</h2>
+      <h2>Modelo actual de enlaces</h2>
       <p>
-        Generated reports use hash URLs such as <code>/docs#md=...</code>.
-        Browsers do not send the hash fragment to the server, so the report opens
-        anonymously and the document payload stays client-side.
+        Los reportes generados usan URLs con hash como <code>/docs#md=...</code>.
+        Los navegadores no envian el fragmento hash al servidor, asi que el reporte
+        abre de forma anonima y la carga del documento se queda del lado del cliente.
       </p>
     </div>
     <div>
-      <h2>Deferred registry</h2>
+      <h2>Registro diferido</h2>
       <p>
-        Friendly real links like <code>/r/pmo-weekly-2026-07-14</code> need an explicit
-        report registry, storage backend, write credential, and retention rule. That is
-        a separate decision before this service becomes stateful for PMO reports.
+        Enlaces reales y legibles como <code>/r/pmo-weekly-2026-07-14</code> necesitan
+        un registro explicito de reportes, backend de almacenamiento, credencial de escritura
+        y regla de retencion. Esa decision va antes de volver stateful este servicio PMO.
       </p>
     </div>
   </section>
 </main>
 
 <footer class="footer">
-  <span>Internal Miyagi PMO fork of SmallDocs.</span>
-  <a href="/trust">Trust</a>
-  <a href="/legal">Privacy and terms</a>
+  <span>Fork interno de SmallDocs para el PMO de Miyagi.</span>
+  <a href="/trust">Confianza</a>
+  <a href="/legal">Privacidad y terminos</a>
   <a href="https://github.com/danybgoode/smalldocs/blob/main/LICENSE" rel="noopener" target="_blank">Elastic License 2.0</a>
 </footer>
 </body>

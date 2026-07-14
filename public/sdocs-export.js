@@ -175,7 +175,7 @@ function buildExportHTML(mermaidImages) {
   var fontLink = S.GOOGLE_FONTS.includes(fontName)
     ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName) + ':wght@400;500;600;700&display=swap">'
     : '';
-  var title = ((S.currentMeta && S.currentMeta.title) || 'Miyagi Report').replace(/</g,'&lt;');
+  var title = ((S.currentMeta && S.currentMeta.title) || 'Reporte Miyagi').replace(/</g,'&lt;');
   var clone = S.renderedEl.cloneNode(true);
   inlineCharts(clone);
   inlineMermaid(clone, mermaidImages);
@@ -1426,7 +1426,7 @@ async function exportPDF() {
     var blob = new Blob([result.bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     if (result.dropped > 0) {
@@ -1475,7 +1475,7 @@ async function exportWord() {
     });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi,'_') + '.docx';
     a.click();
     URL.revokeObjectURL(a.href);
     S.setStatus('Exported Word .docx');
@@ -1546,7 +1546,7 @@ async function exportSlidesPdf() {
     var blob = new Blob([bytes], { type: 'application/pdf' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
+    a.download = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pdf';
     a.click();
     URL.revokeObjectURL(a.href);
     S.setStatus('Slides PDF downloaded');
@@ -1603,7 +1603,7 @@ async function exportSlidesPptx() {
       if (res && res.warnings) totalWarnings += res.warnings;
     }
 
-    var name = ((S.currentMeta && S.currentMeta.title) || 'miyagi-report').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
+    var name = ((S.currentMeta && S.currentMeta.title) || 'reporte-miyagi').replace(/[^a-z0-9_-]/gi, '_') + '-slides.pptx';
     var blob = await pres.write({ outputType: 'blob' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -1632,14 +1632,14 @@ var pptxBtn = document.getElementById('_sd_exp-slides-pptx');
 if (pptxBtn) pptxBtn.addEventListener('click', exportSlidesPptx);
 
 document.getElementById('_sd_exp-raw').addEventListener('click', function() {
-  download('miyagi-report.md', S.currentBody);
+  download('reporte-miyagi.md', S.currentBody);
   S.setStatus('Exported raw .md');
 });
 
 document.getElementById('_sd_exp-styled').addEventListener('click', function() {
   var meta = Object.assign({}, S.currentMeta, { styles: S.collectStyles() });
   var fm = SDocYaml.serializeFrontMatter(meta);
-  download('miyagi-report.md', fm + '\n' + S.currentBody);
+  download('reporte-miyagi.md', fm + '\n' + S.currentBody);
   S.setStatus('Exported styled .md with YAML front matter');
 });
 

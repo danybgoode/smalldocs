@@ -737,9 +737,9 @@ function updateDocumentTitle() {
 var SHORT_LINKS_LEARN_URL = '/trust';
 
 function shortenErrorMessage(code) {
-  return code === 'rate_limited' ? 'Too many requests, try again later.'
-    : code === 'payload_too_large' ? 'Document is too large to shorten.'
-    : 'Could not create short link.';
+  return code === 'rate_limited' ? 'Demasiadas solicitudes. Intenta de nuevo mas tarde.'
+    : code === 'payload_too_large' ? 'El documento es demasiado grande para acortarlo.'
+    : 'No se pudo crear el enlace corto.';
 }
 
 // Mint a short link for the current document AND record the snapshot state the
@@ -757,7 +757,7 @@ async function runShortenFlow(btn, errEl) {
   btn.disabled = true;
   btn.classList.add('fic-shorten-loading');
   var originalLabel = btn.textContent;
-  btn.textContent = 'Shortening...';
+  btn.textContent = 'Acortando...';
   if (errEl) errEl.hidden = true;
   try {
     await generateShortLink();
@@ -785,14 +785,14 @@ async function runShortenFlow(btn, errEl) {
 
 function bridgeStateLabel(state) {
   switch (state) {
-    case 'connecting':   return 'Connecting to local file...';
-    case 'connected':    return 'Syncing with local file';
-    case 'saving':       return 'Syncing with local file';
-    case 'saved':        return 'Syncing with local file';
-    case 'submitted':    return 'Submitted';
-    case 'disconnected': return 'Not syncing with local file, stored in browser only';
-    case 'error':        return 'Not syncing with local file, stored in browser only';
-    default:             return state || 'Connecting to local file...';
+    case 'connecting':   return 'Conectando con archivo local...';
+    case 'connected':    return 'Sincronizando con archivo local';
+    case 'saving':       return 'Sincronizando con archivo local';
+    case 'saved':        return 'Sincronizando con archivo local';
+    case 'submitted':    return 'Enviado';
+    case 'disconnected': return 'Sin sync local, guardado solo en el navegador';
+    case 'error':        return 'Sin sync local, guardado solo en el navegador';
+    default:             return state || 'Conectando con archivo local...';
   }
 }
 
@@ -818,7 +818,7 @@ function bridgeIsLive(status) {
 // screen-share glyph + the words "local sync" tells the reader this file
 // is paired with disk, without nagging them when it isn't.
 var BRIDGE_LIVE_CHIP_HTML = ''
-  + '<span class="fic-live-chip" data-tip="Connected to the file on your machine. Edits flow both ways.">'
+  + '<span class="fic-live-chip" data-tip="Conectado al archivo en tu maquina. Los cambios fluyen en ambos sentidos.">'
   +   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
   +     ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
   +     '<path d="M13 3H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3"/>'
@@ -827,7 +827,7 @@ var BRIDGE_LIVE_CHIP_HTML = ''
   +     '<path d="m17 8 5-5"/>'
   +     '<path d="M17 3h5v5"/>'
   +   '</svg>'
-  +   '<span>local sync</span>'
+  +   '<span>sync local</span>'
   + '</span>';
 
 // Lucide icons (https://lucide.dev). Inlined so the bundle stays free of
@@ -853,14 +853,14 @@ var BRIDGE_SCREEN_SHARE_OFF_SVG = ''
   + '</svg>';
 
 function dataRowHtml(key, label, value, isLocal, isShort, extraHtml) {
-  var pill = isLocal ? '<span class="fic-local-tag" title="Only visible on this device, not included in shared reports">Local only</span>' : '';
+  var pill = isLocal ? '<span class="fic-local-tag" title="Solo visible en este dispositivo, no se incluye en reportes compartidos">Solo local</span>' : '';
   var cls = 'fic-row' + (isShort ? ' fic-row-short' : '');
   return '<div class="' + cls + '" data-key="' + key + '">'
     + '<span class="fic-label">' + label + '</span>'
     + '<span class="fic-value">' + escapeHtml(value) + '</span>'
     + (extraHtml || '')
     + pill
-    + '<button class="fic-copy" title="Copy ' + label.toLowerCase() + '">' + COPY_SVG + '</button>'
+    + '<button class="fic-copy" title="Copiar ' + label.toLowerCase() + '">' + COPY_SVG + '</button>'
     + '</div>';
 }
 
@@ -907,7 +907,7 @@ function renderFileInfoCard() {
     var liveChip = (bridge && bridgeIsLive(bridge.status) && !bridgeShouldRender(S.currentMode))
       ? BRIDGE_LIVE_CHIP_HTML
       : '';
-    slots.push({ type: 'data', html: dataRowHtml('file', 'Filename', meta.file || bridgeFile, false, false, liveChip) });
+    slots.push({ type: 'data', html: dataRowHtml('file', 'Archivo', meta.file || bridgeFile, false, false, liveChip) });
   }
 
   // Blog pages already live at a stable, shareable URL, so surface that as the
@@ -916,7 +916,7 @@ function renderFileInfoCard() {
   // points at the canonical production URL so it's shareable from anywhere.
   var blogMatch = /^\/blogs\/[A-Za-z0-9_-]+$/.test(location.pathname || '');
   if (blogMatch) {
-    slots.push({ type: 'data', html: dataRowHtml('shortUrl', 'Short URL', location.origin + location.pathname, false, true) });
+    slots.push({ type: 'data', html: dataRowHtml('shortUrl', 'URL corta', location.origin + location.pathname, false, true) });
   }
 
   // Don't offer a short URL for the built-in default document (bare / or
@@ -929,8 +929,8 @@ function renderFileInfoCard() {
       : { type: 'intro' });
   }
 
-  if (local.path)     slots.push({ type: 'data', html: dataRowHtml('path', 'Rel. Path', local.path, true, false) });
-  if (local.fullPath) slots.push({ type: 'data', html: dataRowHtml('fullPath', 'Abs. Path', local.fullPath, true, false) });
+  if (local.path)     slots.push({ type: 'data', html: dataRowHtml('path', 'Ruta rel.', local.path, true, false) });
+  if (local.fullPath) slots.push({ type: 'data', html: dataRowHtml('fullPath', 'Ruta abs.', local.fullPath, true, false) });
 
   // Tags row: YAML front-matter tags only. Editing is gated to "the
   // Bridge is connected and can save" - the Bridge is the single write
@@ -984,9 +984,9 @@ function renderFileInfoCard() {
       br.setAttribute('data-state', slot.state);
       var icon = bridgeStateIsLost(slot.state) ? BRIDGE_SCREEN_SHARE_OFF_SVG : BRIDGE_SCREEN_SHARE_SVG;
       br.innerHTML = ''
-        + '<span class="fic-label">Edits</span>'
+        + '<span class="fic-label">Edicion</span>'
         + '<span class="fic-value">' + escapeHtml(slot.label) + '</span>'
-        + '<span class="fic-local-tag" title="Only visible on this device, not included in shared reports">Local only</span>'
+        + '<span class="fic-local-tag" title="Solo visible en este dispositivo, no se incluye en reportes compartidos">Solo local</span>'
         + '<span class="fic-bridge-icon" title="' + escapeHtml(slot.label) + '">' + icon + '</span>';
       rowsEl.appendChild(br);
     } else if (slot.type === 'request') {
@@ -997,9 +997,9 @@ function renderFileInfoCard() {
       var rqRow = document.createElement('div');
       rqRow.className = 'fic-row fic-row-request';
       rqRow.innerHTML = ''
-        + '<span class="fic-label">Agent</span>'
+        + '<span class="fic-label">Agente</span>'
         + '<span class="fic-value fic-request-text">' + escapeHtml(slot.message) + '</span>'
-        + '<button class="fic-request-done" type="button" aria-label="Submit and return control to the agent">Done</button>';
+        + '<button class="fic-request-done" type="button" aria-label="Enviar y devolver control al agente">Listo</button>';
       rqRow.querySelector('.fic-request-done').addEventListener('click', function () {
         if (S.bridge && typeof S.bridge.submit === 'function') S.bridge.submit();
       });
@@ -1009,19 +1009,19 @@ function renderFileInfoCard() {
       tagRow.className = 'fic-row fic-row-tags' + (slot.canEdit ? ' fic-row-tags-edit' : '');
       var chipsHtml = slot.tags.map(function(t) {
         return '<span class="fic-tag-chip">#' + escapeHtml(t)
-          + (slot.canEdit ? '<button class="fic-tag-x" type="button" data-tag="' + escapeHtml(t) + '" aria-label="Remove tag" title="Remove tag">' + TAG_CLOSE_SVG + '</button>' : '')
+          + (slot.canEdit ? '<button class="fic-tag-x" type="button" data-tag="' + escapeHtml(t) + '" aria-label="Quitar etiqueta" title="Quitar etiqueta">' + TAG_CLOSE_SVG + '</button>' : '')
           + '</span>';
       }).join('');
       var addCtl = slot.canEdit
-        ? '<button class="fic-tag-add" type="button" aria-label="Add tag" title="Add tag">' + PLUS_SVG + '</button>'
+        ? '<button class="fic-tag-add" type="button" aria-label="Agregar etiqueta" title="Agregar etiqueta">' + PLUS_SVG + '</button>'
         : '';
       var hint = slot.showEditHint
         ? '<span class="fic-tag-hint">' + (slot.tags.length
-            ? 'read-only - open via <code>sdoc</code> to edit'
-            : 'open via <code>sdoc</code> to add tags') + '</span>'
+            ? 'solo lectura - abre via <code>sdoc</code> para editar'
+            : 'abre via <code>sdoc</code> para agregar etiquetas') + '</span>'
         : '';
       tagRow.innerHTML = ''
-        + '<span class="fic-label">Tags</span>'
+        + '<span class="fic-label">Etiquetas</span>'
         + '<span class="fic-value fic-tag-chips">' + chipsHtml + hint + '</span>'
         + addCtl;
       if (slot.canEdit) attachTagRowHandlers(tagRow, slot.filePath, slot.tags);
@@ -1030,14 +1030,14 @@ function renderFileInfoCard() {
       var introRow = document.createElement('div');
       introRow.className = 'fic-row fic-row-short-intro';
       introRow.innerHTML = ''
-        + '<span class="fic-label">Short URL</span>'
-        + '<button class="fic-shorten-button" title="Generate a short link for this document">Generate</button>'
+        + '<span class="fic-label">URL corta</span>'
+        + '<button class="fic-shorten-button" title="Generar un enlace corto para este documento">Generar</button>'
         + '<span class="fic-short-intro-text">'
-        +   'Encrypted report snapshot stored on this server, with the decryption key in the link '
-        +   '(<a class="fic-short-intro-learn" href="' + SHORT_LINKS_LEARN_URL + '" target="_blank" rel="noopener">learn more</a>)'
+        +   'Snapshot cifrado del reporte guardado en este servidor, con la llave de descifrado en el enlace '
+        +   '(<a class="fic-short-intro-learn" href="' + SHORT_LINKS_LEARN_URL + '" target="_blank" rel="noopener">ver mas</a>)'
         + '</span>'
         + '<span class="fic-shorten-error" hidden></span>'
-        + '<button class="fic-copy fic-generate-icon" title="Generate a short link">' + LINK_SVG + '</button>';
+        + '<button class="fic-copy fic-generate-icon" title="Generar enlace corto">' + LINK_SVG + '</button>';
       rowsEl.appendChild(introRow);
       var genBtn = introRow.querySelector('.fic-shorten-button');
       var genIcon = introRow.querySelector('.fic-generate-icon');

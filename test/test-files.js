@@ -33,7 +33,7 @@ module.exports = function(harness) {
     const html = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf-8');
     assert.ok(html.includes('<title>Miyagi Reports</title>'), 'missing Miyagi Reports title');
     assert.ok(html.includes('toolbar-brand-full">Miyagi Reports</span>'), 'missing full toolbar brand');
-    assert.ok(html.includes('Report Library'), 'missing report library label');
+    assert.ok(html.includes('Biblioteca de reportes'), 'missing report library label');
     assert.ok(!html.includes('SmallDocs - an office suite for coding agents'),
       'upstream SmallDocs marketing title should not be present');
   });
@@ -41,7 +41,7 @@ module.exports = function(harness) {
   test('default document introduces the report hub', () => {
     const doc = fs.readFileSync(path.join(__dirname, '..', 'public', 'sdoc.md'), 'utf-8');
     assert.ok(doc.includes('# Miyagi Reports'), 'default doc should open as Miyagi Reports');
-    assert.ok(/weekly PMO recaps/i.test(doc), 'default doc should describe PMO reports');
+    assert.ok(/recapitulaciones PMO semanales/i.test(doc), 'default doc should describe PMO reports');
     assert.ok(!doc.includes('Meet `sdoc`'), 'default doc should not be upstream marketing copy');
   });
 
@@ -76,11 +76,11 @@ module.exports = function(harness) {
 
   test('export defaults use report filenames', () => {
     const js = fs.readFileSync(path.join(__dirname, '..', 'public', 'sdocs-export.js'), 'utf-8');
-    assert.ok(js.includes("'Miyagi Report'"), 'missing branded export title fallback');
-    assert.ok(js.includes("'miyagi-report'"), 'missing branded export filename fallback');
-    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'Miyagi Report'"),
+    assert.ok(js.includes("'Reporte Miyagi'"), 'missing branded export title fallback');
+    assert.ok(js.includes("'reporte-miyagi'"), 'missing branded export filename fallback');
+    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'Reporte Miyagi'"),
       'branded export title fallback should tolerate missing metadata');
-    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'miyagi-report'"),
+    assert.ok(js.includes("(S.currentMeta && S.currentMeta.title) || 'reporte-miyagi'"),
       'branded export filename fallback should tolerate missing metadata');
   });
 

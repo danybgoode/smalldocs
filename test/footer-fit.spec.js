@@ -20,11 +20,11 @@ const { test, expect } = require('@playwright/test');
  *   - items drop in priority order (the hidden set is a prefix of
  *     FOOTER_DROP_ORDER - you never hide a higher-priority item while a
  *     lower-priority one is still shown).
- * Plus: the report-link block survives far narrower than the old 999px drop.
+ * Plus: the report-link block survives below the old 999px drop.
  */
 
 // Must match FOOTER_DROP_ORDER in index.html.
-const DROP_ORDER = ['_sd_cli-install-wrap', 'sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
+const DROP_ORDER = ['sb-trust', 'sb-cli', 'sb-discord', 'sb-github', 'sb-business'];
 const ALWAYS = ['sb-private', 'sb-terms'];
 
 const WIDTHS = [];
@@ -99,7 +99,7 @@ test('docs footer fits and drops in order across the range', async ({ page }) =>
 
 test('doc-page footer keeps the report-link affordance far longer', async ({ page }) => {
   await page.goto('/docs', { waitUntil: 'networkidle' });
-  await expect(page.locator('#_sd_cli-lead')).toHaveText('Report links:');
+  await expect(page.locator('#_sd_cli-lead')).toHaveText('Enlaces:');
   await page.waitForTimeout(200);
 
   for (const w of WIDTHS) {
@@ -108,12 +108,12 @@ test('doc-page footer keeps the report-link affordance far longer', async ({ pag
     assertInvariants(await measure(page), w);
   }
 
-  // The whole point of the change: at 900px the report-links block (lead + prompt
+  // The whole point of the change: at 920px the report-links block (lead + prompt
   // chip) is still present - the old fixed breakpoint dropped it at 999px.
-  // (With the 28px bar / 11.5px footer text it now drops around 880px, still
-  // far below the old 999px.)
-  await page.setViewportSize({ width: 900, height: 900 });
+  // (With the localized 28px bar / 11.5px footer text it now drops around
+  // 900px, still below the old 999px.)
+  await page.setViewportSize({ width: 920, height: 900 });
   await page.waitForTimeout(120);
   const m = await measure(page);
-  expect(m.shown['sb-cli'], 'report links block still shown at 900px on a doc page').toBe(true);
+  expect(m.shown['sb-cli'], 'report links block still shown at 920px on a doc page').toBe(true);
 });

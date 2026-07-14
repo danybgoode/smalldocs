@@ -391,7 +391,7 @@
     topbar.innerHTML =
       '<span class="sdoc-mermaid-focus-brand">'
       +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-full">Miyagi Reports</span>'
-      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-short">Reports</span>'
+      +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-short">Reportes</span>'
       +   '<span class="sdoc-mermaid-focus-brand-text sdoc-mermaid-focus-brand-tiny">MR</span>'
       +   '<span class="sdoc-mermaid-focus-brand-suf">Diagram</span>'
       + '</span>'
