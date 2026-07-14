@@ -788,46 +788,11 @@
     <span class="sb-item" id="sb-terms">Aceptas nuestros <a href="/legal" target="_blank" rel="noopener" style="color:var(--text-2); text-decoration:underline">terminos</a></span>
   </span>
 </div>
-<pre id="_sd_cli-prompt-text" style="display:none"></pre>
-<style>
-  #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-btn { opacity: 1 !important; }
-  #_sd_cli-prompt-wrap:hover #_sd_cli-prompt-label { border-color: var(--accent) !important; }
-</style>
-<script src="/public/sdocs-cli-setup.js"></script>
 <script nonce="__CSP_NONCE__">
 (function () {
-  var COPY_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-  var CHECK_ICON = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-  function bindCopy(wrap, btn, getText) {
-    if (!wrap || !btn) return;
-    wrap.addEventListener('click', function () {
-      navigator.clipboard.writeText(getText()).then(function () {
-        btn.innerHTML = CHECK_ICON;
-        setTimeout(function () { btn.innerHTML = COPY_ICON; }, 1500);
-      });
-    });
-  }
-
   // Someone reading a document arrived via a #md= hash, so they are likely
   // already using the report renderer: frame the footer around updating.
   var isDocPage = /(^|[#&])md=/.test(location.hash || '');
-
-  var CLI = window.SDocCliSetup || {};
-
-  if (isDocPage) {
-    var label = document.getElementById('_sd_cli-prompt-label');
-    if (label) label.textContent = 'Copiar prompt de actualizacion';
-    var pwrap = document.getElementById('_sd_cli-prompt-wrap');
-    if (pwrap) pwrap.title = 'Copia un prompt para pedir al agente que actualice el renderer y aprenda sus funciones recientes';
-  }
-
-  var promptEl = document.getElementById('_sd_cli-prompt-text');
-  if (promptEl && CLI.SETUP_PROMPT) promptEl.textContent = CLI.SETUP_PROMPT;
-  bindCopy(
-    document.getElementById('_sd_cli-prompt-wrap'),
-    document.getElementById('_sd_cli-prompt-btn'),
-    function () { return promptEl ? promptEl.textContent.trim() : ''; }
-  );
 
   // Footer fit. The bar is one fixed-height line and must never wrap. Its
   // content differs by page - the doc-page "sdoc upgrade" chip is far
@@ -901,22 +866,22 @@
     var then = new Date(iso).getTime();
     if (!then) return '';
     var s = Math.max(0, (Date.now() - then) / 1000);
-    if (s < 60) return 'just now';
+    if (s < 60) return 'ahora';
     var units = [
-      [31536000, 'year'],
-      [2592000, 'month'],
-      [604800, 'week'],
-      [86400, 'day'],
-      [3600, 'hour'],
-      [60, 'minute'],
+      [31536000, 'ano', 'anos'],
+      [2592000, 'mes', 'meses'],
+      [604800, 'semana', 'semanas'],
+      [86400, 'dia', 'dias'],
+      [3600, 'hora', 'horas'],
+      [60, 'minuto', 'minutos'],
     ];
     for (var i = 0; i < units.length; i++) {
       if (s >= units[i][0]) {
         var n = Math.round(s / units[i][0]);
-        return n + ' ' + units[i][1] + (n > 1 ? 's' : '') + ' ago';
+        return 'hace ' + n + ' ' + (n === 1 ? units[i][1] : units[i][2]);
       }
     }
-    return 'just now';
+    return 'ahora';
   }
 })();
 </script>
