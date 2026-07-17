@@ -31,6 +31,7 @@ require('./test-zoom-math')(harness);
 require('./test-update')(harness);
 require('./test-analytics')(harness);
 require('./test-short-links')(harness);
+require('./test-report-registry')(harness);
 require('./test-chrome')(harness);
 require('./test-comments')(harness);
 require('./test-slide-comments')(harness);

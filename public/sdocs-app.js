@@ -1370,7 +1370,9 @@ var SHORT_LINK_PATH_RE = /^\/s\/([A-Za-z0-9_-]{1,32})$/;
 
 function normalizedBasePath() {
   var p = window.location.pathname;
-  if (p === '/new' || SHORT_LINK_PATH_RE.test(p)) return '/docs';
+  // REPORT_REGISTRY_PATH_RE is assigned further down this same top-level script (before any user
+  // interaction can call this function) — see the 'report-registry' Source below.
+  if (p === '/new' || SHORT_LINK_PATH_RE.test(p) || REPORT_REGISTRY_PATH_RE.test(p)) return '/docs';
   return p;
 }
 
@@ -2118,6 +2120,42 @@ async function initShortLink(id) {
   }
 }
 
+// reporthub-as-notion S1.2: the /r/<slug> report-registry resolver. Unlike /s/<id> (client-side
+// encrypted, key lives in the URL fragment), a registry report is plaintext and public by design — the
+// same content a URL-hash link already exposes today (see infra/gcp/provision-report-registry.sh). The
+// server proxies the GCS read at /api/report/<slug> (same-origin, no new CSP connect-src needed); this
+// just fetches that and loads it like any other document.
+var REPORT_REGISTRY_PATH_RE = /^\/r\/([A-Za-z0-9_-]{1,80})$/;
+
+async function loadReportRegistryDoc(slug) {
+  S._loadingDocument = true;
+  try {
+    var resp = await fetch('/api/report/' + encodeURIComponent(slug));
+    if (resp.status === 404) throw new Error('not_found');
+    if (!resp.ok) throw new Error('fetch_failed');
+    var text = await resp.text();
+    S._isDefaultState = false;
+    S.resetAllStyles();
+    loadText(text);
+    // loadText -> syncAll('load') -> updateHash queues a URL rewrite. Cancel it so the /r/<slug> link
+    // stays visible in the address bar, same as the short-link source does.
+    clearTimeout(S._hashTimer);
+    setMode('read', true);
+    maybeAutoExpandCodewalk();
+    maybeAutoExpandCodeFile();
+  } catch (e) {
+    // Humane, hub-branded copy: dailies expire off the registry's 90-day TTL (packets are kept forever),
+    // and either way the sender's original URL-hash link (#md=...) still works — the registry only ever
+    // upgrades a link, it's never the sole way to reach a report.
+    var msg = e && e.message === 'not_found'
+      ? 'This report link may have expired — daily reports are kept for 90 days (weekly/monthly packets are kept forever). If you still have the original URL-hash link (#md=...), it will still work.'
+      : 'Could not load this report right now. If you still have the original URL-hash link (#md=...), it will still work.';
+    setStatus(msg, 'error');
+  } finally {
+    S._loadingDocument = false;
+  }
+}
+
 // Register the document sources this build ships with. Order matters:
 // Sources.select() picks the FIRST match, so the most specific URL
 // shapes go first. Later chunks (Bridge, Library, WorkspaceLink) add a
@@ -2133,6 +2171,19 @@ S.Sources.register({
       name: 'short-link',
       capabilities: { canSave: false, canWatch: false, canSubmit: false },
       load: function () { return initShortLink(id); },
+    };
+  },
+});
+
+S.Sources.register({
+  name: 'report-registry',
+  matches: function (loc) { return REPORT_REGISTRY_PATH_RE.test(loc.pathname); },
+  create: function (loc) {
+    var slug = REPORT_REGISTRY_PATH_RE.exec(loc.pathname)[1];
+    return {
+      name: 'report-registry',
+      capabilities: { canSave: false, canWatch: false, canSubmit: false },
+      load: function () { return loadReportRegistryDoc(slug); },
     };
   },
 });

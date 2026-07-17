@@ -19,6 +19,26 @@ module.exports = function(harness) {
     try { fs.unlinkSync(testDbPath); } catch (_) {}
     try { fs.unlinkSync(testShortLinksDbPath); } catch (_) {}
     try { fs.unlinkSync(testTeamsDbPath); } catch (_) {}
+
+    // reporthub-as-notion S1.2: a tiny fixture standing in for storage.googleapis.com, so
+    // /api/report/:slug + /r/:slug coverage runs fully offline (no real bucket, no network). The server
+    // under test is pointed at it via REPORT_REGISTRY_STORAGE_BASE_URL — an override report-registry.js
+    // only reads for tests, never set in any deployed environment.
+    const registryObjects = {
+      'daily/daily-story-2026-07-17-abc123.md': '---\ntitle: "Test daily story"\n---\n\n# Test daily story\n',
+      'packets/pmo-weekly-2026-07-17.md': '---\ntitle: "Test weekly packet"\n---\n\n# Test weekly packet\n',
+    };
+    const registryFixture = http.createServer((req, res) => {
+      // Requested shape: /<bucket>/<objectPath> — bucket segment is ignored, only the object path matters.
+      const objectPath = decodeURIComponent(req.url.replace(/^\//, '').split('/').slice(1).join('/'));
+      const body = registryObjects[objectPath];
+      if (body === undefined) { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Not Found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/markdown' });
+      res.end(body);
+    });
+    await new Promise((resolve) => registryFixture.listen(0, resolve));
+    const registryFixturePort = registryFixture.address().port;
+
     const server = spawn('node', [path.join(__dirname, '..', 'server.js')], {
       env: {
         ...process.env,
@@ -29,6 +49,8 @@ module.exports = function(harness) {
         ANALYTICS_FLUSH_IMMEDIATE: '1',
         SHORT_LINKS_DB: testShortLinksDbPath,
         TEAMS_DB: testTeamsDbPath,
+        REPORT_REGISTRY_STORAGE_BASE_URL: 'http://localhost:' + registryFixturePort,
+        REPORT_REGISTRY_BUCKET: 'test-bucket',
       },
       stdio: 'pipe',
     });
@@ -372,6 +394,61 @@ module.exports = function(harness) {
       assert.ok(r.body.includes('sdocs-app.js'), 'should serve the Miyagi Reports index');
     });
 
+    // ── Report-registry resolver (reporthub-as-notion S1.2) ──────────────
+
+    await testAsync('GET /api/report/:slug proxies a daily/ object from the registry', async () => {
+      const r = await get(BASE + '/api/report/daily-story-2026-07-17-abc123');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.headers['content-type'].includes('text/markdown'));
+      assert.ok(r.body.includes('Test daily story'));
+    });
+
+    await testAsync('GET /api/report/:slug proxies a packets/ object from the registry', async () => {
+      const r = await get(BASE + '/api/report/pmo-weekly-2026-07-17');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.body.includes('Test weekly packet'));
+    });
+
+    await testAsync('GET /api/report/:slug sends no-store cache header', async () => {
+      const r = await get(BASE + '/api/report/pmo-weekly-2026-07-17');
+      assert.ok(
+        r.headers['cache-control'] && r.headers['cache-control'].includes('no-store'),
+        'cache-control should include no-store'
+      );
+    });
+
+    await testAsync('GET /api/report/:slug for an unknown slug returns 404 not_found', async () => {
+      const r = await get(BASE + '/api/report/does-not-exist-xyz');
+      assert.strictEqual(r.status, 404);
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.error, 'not_found');
+    });
+
+    await testAsync('GET /api/report/:slug rejects a path-traversal slug with 400 invalid_slug', async () => {
+      const r = await get(BASE + '/api/report/..%2F..%2Fetc%2Fpasswd');
+      assert.strictEqual(r.status, 400);
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.error, 'invalid_slug');
+    });
+
+    await testAsync('GET /r/:slug serves index.html (client-side render), works whether or not the object exists', async () => {
+      const hit = await get(BASE + '/r/pmo-weekly-2026-07-17');
+      assert.strictEqual(hit.status, 200);
+      assert.ok(hit.headers['content-type'].includes('text/html'));
+      assert.ok(hit.body.includes('sdocs-app.js'), 'should serve the Miyagi Reports index');
+
+      // A missing slug still serves the app shell — the client-side 'report-registry' Source is what
+      // renders the friendly 404 after fetching /api/report/<slug> and getting a 404 back.
+      const miss = await get(BASE + '/r/does-not-exist-xyz');
+      assert.strictEqual(miss.status, 200);
+      assert.ok(miss.body.includes('sdocs-app.js'));
+    });
+
+    await testAsync('asset-versioning: /r/:slug is versioned', async () => {
+      const v = JSON.parse((await get(BASE + '/version-check')).body).version;
+      await assertEveryAssetVersioned('/r/pmo-weekly-2026-07-17', v);
+    });
+
     // ── Asset cache-busting ──────────────────────────
     // Returning users with a stale browser HTTP cache will get the new HTML
     // and refetch local assets only if their URLs differ. Every <link> /
@@ -554,6 +631,7 @@ module.exports = function(harness) {
     });
 
     server.kill();
+    registryFixture.close();
     try { fs.unlinkSync(testDbPath); } catch (_) {}
     try { fs.unlinkSync(testDbPath + '-wal'); } catch (_) {}
     try { fs.unlinkSync(testDbPath + '-shm'); } catch (_) {}
