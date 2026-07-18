@@ -64,7 +64,10 @@
     els.shipped.textContent = text(stats.shippedEpics, '0');
     els.active.textContent = text(stats.activeEpics, '0');
     els.items.textContent = text(stats.total, state.data.items.length);
-    els.generated.textContent = 'Actualizado ' + formatDate(state.data.generatedAt);
+    // S2.1: distinguish a live-fetched snapshot from the build-time-baked fallback so a smoke test can
+    // tell at a glance whether the publish routine is actually keeping this fresh.
+    const sourceNote = state.dataSource === 'fallback' ? ' (instantanea local, no en vivo)' : ' (en vivo)';
+    els.generated.textContent = 'Actualizado ' + formatDate(state.data.generatedAt) + sourceNote;
   }
 
   function renderViews() {
@@ -213,14 +216,40 @@
     }
   }
 
+  // reporthub-as-notion S2.1: fetch + validate a reports-data.json-shaped payload from `url`. Throws on
+  // any failure (network error, non-2xx, invalid shape) — callers decide what "any failure" means.
+  async function fetchReportData(url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('report_data_unavailable');
+    const data = await res.json();
+    if (!Array.isArray(data.items)) throw new Error('report_data_invalid');
+    return data;
+  }
+
+  // Two-tier load: the LIVE endpoint (read-through to the report registry's live/roadmap-status.json,
+  // republished on every scripts/publish-live-views.mjs run — no fork redeploy needed for it to go
+  // stale-free) first, falling back to the build-time-baked static snapshot on ANY failure — a stopped
+  // publish routine, an unreachable bucket, or this being an older deploy without the /api/live route
+  // all degrade to "the hub still works, just as fresh as the last redeploy" rather than an outage. This
+  // mirrors Sprint 1's /r/<slug> carve-out: an additive read path with a baked-in fallback, no flag.
+  async function loadReportData() {
+    const liveUrl = (els.main && els.main.dataset.liveReportData) || '/api/live/roadmap-status';
+    const fallbackUrl = (els.main && els.main.dataset.reportData) || '/public/reports-data.json';
+    try {
+      const data = await fetchReportData(liveUrl);
+      return { data, source: 'live' };
+    } catch (liveError) {
+      const data = await fetchReportData(fallbackUrl);
+      return { data, source: 'fallback' };
+    }
+  }
+
   async function init() {
     bind();
     try {
-      const dataUrl = els.main && els.main.dataset.reportData ? els.main.dataset.reportData : '/public/reports-data.json';
-      const res = await fetch(dataUrl, { cache: 'no-store' });
-      if (!res.ok) throw new Error('report_data_unavailable');
-      state.data = await res.json();
-      if (!Array.isArray(state.data.items)) throw new Error('report_data_invalid');
+      const { data, source } = await loadReportData();
+      state.data = data;
+      state.dataSource = source;
       for (const item of state.data.items) item.searchableText = searchable(item);
       renderStats();
       renderViews();

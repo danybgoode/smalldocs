@@ -590,6 +590,26 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // GET /api/live/:key — reporthub-as-notion S2.1: read-through proxy to a live/ JSON object the root
+  // repo's scripts/publish-live-views.mjs republishes on every run (e.g. `roadmap-status`, the hub's
+  // full reports-data.json snapshot, kept fresh without a fork redeploy). Same read-through/no-state
+  // discipline as /api/report/:slug above — never gated behind STATEFUL_APIS_ENABLED. public/reports.js
+  // fetches this FIRST and falls back to the build-time-baked /public/reports-data.json on ANY failure
+  // (network error, 404 nothing published yet, malformed JSON) — this route never needs to be "up" for
+  // the hub to render, only for it to be current.
+  if (pathname.startsWith('/api/live/')) {
+    const key = decodeURIComponent(pathname.slice('/api/live/'.length));
+    reportRegistry.fetchLiveJson({ key }).then((result) => {
+      if (!result.ok) {
+        sendJson(res, result.status, { error: result.reason });
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+      res.end(JSON.stringify(result.data));
+    });
+    return;
+  }
+
   // CLI installer script: `curl -fsSL https://smalldocs.org/install | sh`.
   // Installs the `sdoc` command under ~/.sdocs without npm or root.
   if (pathname === '/install') {
