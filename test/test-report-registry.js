@@ -13,10 +13,13 @@ module.exports = function (harness) {
   const {
     DEFAULT_BUCKET,
     isValidSlug,
+    isValidLiveKey,
     objectPathForSlug,
+    liveObjectPath,
     resolveBucket,
     resolveStorageBaseUrl,
     buildObjectUrl,
+    buildLiveObjectUrl,
   } = require(path.join(__dirname, '..', 'report-registry'));
 
   test('DEFAULT_BUCKET is the canonical prod bucket (matches infra/gcp/provision-report-registry.sh)', () => {
@@ -78,6 +81,37 @@ module.exports = function (harness) {
         env: { REPORT_REGISTRY_BUCKET: 'miyagi-pmo-reports-staging' },
       }),
       'https://storage.googleapis.com/miyagi-pmo-reports-staging/packets/pmo-weekly-2026-07-17.md'
+    );
+  });
+
+  // ── reporthub-as-notion S2.1: live/ key support ──────────────────
+
+  test('isValidLiveKey accepts real live-view key shapes', () => {
+    assert.ok(isValidLiveKey('roadmap-status'));
+    assert.ok(isValidLiveKey('pmo-live-metrics'));
+  });
+
+  test('isValidLiveKey rejects path traversal / unsafe characters, same as isValidSlug', () => {
+    assert.strictEqual(isValidLiveKey('../secret'), false);
+    assert.strictEqual(isValidLiveKey('a/b'), false);
+    assert.strictEqual(isValidLiveKey('a b'), false);
+    assert.strictEqual(isValidLiveKey(''), false);
+    assert.strictEqual(isValidLiveKey(undefined), false);
+    assert.strictEqual(isValidLiveKey(null), false);
+  });
+
+  test('liveObjectPath maps under live/ with a .json extension', () => {
+    assert.strictEqual(liveObjectPath('roadmap-status'), 'live/roadmap-status.json');
+  });
+
+  test('buildLiveObjectUrl composes base + bucket + live object path', () => {
+    assert.strictEqual(
+      buildLiveObjectUrl({ key: 'roadmap-status', env: {} }),
+      'https://storage.googleapis.com/miyagi-pmo-reports/live/roadmap-status.json'
+    );
+    assert.strictEqual(
+      buildLiveObjectUrl({ key: 'roadmap-status', env: { REPORT_REGISTRY_BUCKET: 'miyagi-pmo-reports-staging' } }),
+      'https://storage.googleapis.com/miyagi-pmo-reports-staging/live/roadmap-status.json'
     );
   });
 };

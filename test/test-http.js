@@ -27,6 +27,9 @@ module.exports = function(harness) {
     const registryObjects = {
       'daily/daily-story-2026-07-17-abc123.md': '---\ntitle: "Test daily story"\n---\n\n# Test daily story\n',
       'packets/pmo-weekly-2026-07-17.md': '---\ntitle: "Test weekly packet"\n---\n\n# Test weekly packet\n',
+      // reporthub-as-notion S2.1: a live/ fixture for the /api/live/:key read-through route.
+      'live/roadmap-status.json': JSON.stringify({ schemaVersion: 1, items: [{ id: 'x' }], views: [] }),
+      'live/bad-json.json': '{ not actually json',
     };
     const registryFixture = http.createServer((req, res) => {
       // Requested shape: /<bucket>/<objectPath> — bucket segment is ignored, only the object path matters.
@@ -447,6 +450,46 @@ module.exports = function(harness) {
     await testAsync('asset-versioning: /r/:slug is versioned', async () => {
       const v = JSON.parse((await get(BASE + '/version-check')).body).version;
       await assertEveryAssetVersioned('/r/pmo-weekly-2026-07-17', v);
+    });
+
+    // ── Live-view resolver (reporthub-as-notion S2.1) ──────────────
+
+    await testAsync('GET /api/live/:key proxies a live/ JSON object from the registry', async () => {
+      const r = await get(BASE + '/api/live/roadmap-status');
+      assert.strictEqual(r.status, 200);
+      assert.ok(r.headers['content-type'].includes('application/json'));
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.schemaVersion, 1);
+      assert.strictEqual(data.items[0].id, 'x');
+    });
+
+    await testAsync('GET /api/live/:key sends no-store cache header', async () => {
+      const r = await get(BASE + '/api/live/roadmap-status');
+      assert.ok(
+        r.headers['cache-control'] && r.headers['cache-control'].includes('no-store'),
+        'cache-control should include no-store'
+      );
+    });
+
+    await testAsync('GET /api/live/:key for an unpublished key returns 404 not_found', async () => {
+      const r = await get(BASE + '/api/live/does-not-exist-xyz');
+      assert.strictEqual(r.status, 404);
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.error, 'not_found');
+    });
+
+    await testAsync('GET /api/live/:key rejects a path-traversal key with 400 invalid_key', async () => {
+      const r = await get(BASE + '/api/live/..%2F..%2Fetc%2Fpasswd');
+      assert.strictEqual(r.status, 400);
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.error, 'invalid_key');
+    });
+
+    await testAsync('GET /api/live/:key returns 502 invalid_json for an unparseable object (never crashes the server)', async () => {
+      const r = await get(BASE + '/api/live/bad-json');
+      assert.strictEqual(r.status, 502);
+      const data = JSON.parse(r.body);
+      assert.strictEqual(data.error, 'invalid_json');
     });
 
     // ── Asset cache-busting ──────────────────────────

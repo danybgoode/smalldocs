@@ -34,6 +34,20 @@ function objectPathForSlug(slug) {
   return slug.startsWith('daily-') ? `daily/${slug}.md` : `packets/${slug}.md`;
 }
 
+// reporthub-as-notion S2.1: live/ — a well-known, repeatedly-overwritten JSON object the root repo's
+// scripts/publish-live-views.mjs republishes on every run (scripts/lib/report-registry.mjs's
+// `allowOverwrite`/`liveObjectPath`, the write-side counterpart). Same slug-shaped validation as a
+// regular report slug — it's still a GCS object-key/URL path segment.
+const LIVE_KEY_RE = /^[A-Za-z0-9_-]{1,80}$/;
+
+function isValidLiveKey(key) {
+  return typeof key === 'string' && LIVE_KEY_RE.test(key);
+}
+
+function liveObjectPath(key) {
+  return `live/${key}.json`;
+}
+
 function resolveBucket(env = process.env) {
   return env.REPORT_REGISTRY_BUCKET || DEFAULT_BUCKET;
 }
@@ -48,6 +62,12 @@ function resolveStorageBaseUrl(env = process.env) {
 function buildObjectUrl({ slug, env = process.env }) {
   const bucket = resolveBucket(env);
   const objectPath = objectPathForSlug(slug);
+  return `${resolveStorageBaseUrl(env)}/${bucket}/${objectPath}`;
+}
+
+function buildLiveObjectUrl({ key, env = process.env }) {
+  const bucket = resolveBucket(env);
+  const objectPath = liveObjectPath(key);
   return `${resolveStorageBaseUrl(env)}/${bucket}/${objectPath}`;
 }
 
@@ -72,13 +92,47 @@ async function fetchReportMarkdown({ slug, env = process.env, fetchImpl = fetch,
   }
 }
 
+// Fetches + parses the live JSON payload at live/<key>.json. Returns one of:
+//   { ok: true, data }
+//   { ok: false, status: 400, reason: 'invalid_key' }
+//   { ok: false, status: 404, reason: 'not_found' }        — nothing has been published at this key yet
+//   { ok: false, status: 502, reason: 'upstream_error' }    — network error or a non-200/404 from GCS
+//   { ok: false, status: 502, reason: 'invalid_json' }      — the object exists but isn't parseable JSON
+//                                                              (a publish mid-write, or a wrong content
+//                                                              type — never expected in steady state)
+// Never throws — same soft-mode contract as fetchReportMarkdown. A caller (the /api/live/:key route)
+// turns any non-ok result into a 4xx/5xx JSON error; the CLIENT (public/reports.js) is the one that
+// actually degrades gracefully, falling back to the bundled build-time snapshot on ANY failure here —
+// this function's job is just "report what happened," not decide the fallback.
+async function fetchLiveJson({ key, env = process.env, fetchImpl = fetch, timeoutMs = 8000 } = {}) {
+  if (!isValidLiveKey(key)) return { ok: false, status: 400, reason: 'invalid_key' };
+  const url = buildLiveObjectUrl({ key, env });
+  try {
+    const res = await fetchImpl(url, { signal: AbortSignal.timeout(timeoutMs) });
+    if (res.status === 404) return { ok: false, status: 404, reason: 'not_found' };
+    if (!res.ok) return { ok: false, status: 502, reason: 'upstream_error' };
+    const text = await res.text();
+    try {
+      return { ok: true, data: JSON.parse(text) };
+    } catch (_err) {
+      return { ok: false, status: 502, reason: 'invalid_json' };
+    }
+  } catch (err) {
+    return { ok: false, status: 502, reason: 'upstream_error' };
+  }
+}
+
 module.exports = {
   DEFAULT_BUCKET,
   DEFAULT_STORAGE_BASE_URL,
   isValidSlug,
+  isValidLiveKey,
   objectPathForSlug,
+  liveObjectPath,
   resolveBucket,
   resolveStorageBaseUrl,
   buildObjectUrl,
+  buildLiveObjectUrl,
   fetchReportMarkdown,
+  fetchLiveJson,
 };
