@@ -9,6 +9,11 @@ const STATEFUL_APIS_ENABLED = process.env.SDOCS_ENABLE_STATEFUL_APIS === '1';
 const ANALYTICS_ENABLED = STATEFUL_APIS_ENABLED && process.env.ANALYTICS_ENABLED === '1';
 const analytics = ANALYTICS_ENABLED ? require('./analytics/db') : null;
 
+// reporthub-as-notion S1.2: the /r/<slug> report-registry resolver. Deliberately NOT gated behind
+// STATEFUL_APIS_ENABLED — it's a stateless read-through proxy to a public GCS bucket, no SQLite, no
+// state of its own (see report-registry.js's header comment).
+const reportRegistry = require('./report-registry');
+
 const shortLinks = STATEFUL_APIS_ENABLED ? require('./short-links/db') : null;
 const shortLinksRateLimit = STATEFUL_APIS_ENABLED ? require('./short-links/rate-limit') : null;
 const SHORT_LINKS_MAX_BYTES = 256 * 1024;       // 256 KB ciphertext cap
@@ -568,6 +573,23 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // GET /api/report/:slug — reporthub-as-notion S1.2: read-through proxy to the public GCS report
+  // registry (never gated behind STATEFUL_APIS_ENABLED; see reportRegistry's header comment). The client
+  // Source for /r/<slug> (public/sdocs-app.js) fetches this same-origin endpoint rather than talking to
+  // storage.googleapis.com directly, so no bucket host needs to be added to any page's CSP connect-src.
+  if (pathname.startsWith('/api/report/')) {
+    const slug = decodeURIComponent(pathname.slice('/api/report/'.length));
+    reportRegistry.fetchReportMarkdown({ slug }).then((result) => {
+      if (!result.ok) {
+        sendJson(res, result.status, { error: result.reason });
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'text/markdown; charset=utf-8', 'Cache-Control': 'no-store' });
+      res.end(result.text);
+    });
+    return;
+  }
+
   // CLI installer script: `curl -fsSL https://smalldocs.org/install | sh`.
   // Installs the `sdoc` command under ~/.sdocs without npm or root.
   if (pathname === '/install') {
@@ -818,7 +840,9 @@ const server = http.createServer((req, res) => {
     : null;
   // The /s/<id> id range stays {1,32} so links minted before the id-length
   // bump (8 chars) and after it (22 chars) both serve the app shell.
-  if (pathname === '/docs' || pathname === '/new' || pathname === '/legal' || pathname === '/privacy' || pathname === '/agent-changes' || pathname === '/upgrade' || blogSlug || /^\/s\/[A-Za-z0-9_-]{1,32}$/.test(pathname)) {
+  // /r/<slug> (reporthub-as-notion S1.2) serves the same app shell — the client-side 'report-registry'
+  // Source (public/sdocs-app.js) recognizes the path and fetches /api/report/<slug> to render it.
+  if (pathname === '/docs' || pathname === '/new' || pathname === '/legal' || pathname === '/privacy' || pathname === '/agent-changes' || pathname === '/upgrade' || blogSlug || /^\/s\/[A-Za-z0-9_-]{1,32}$/.test(pathname) || /^\/r\/[A-Za-z0-9_-]{1,80}$/.test(pathname)) {
     const nonce = crypto.randomBytes(16).toString('base64');
     const defaultMdPath = pathname === '/legal'
       ? '/public/legal.md'
